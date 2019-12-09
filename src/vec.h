@@ -19,6 +19,14 @@ public:
 			    t[1] - a.t[1],  
 			    t[2] - a.t[2]);
 	}
+
+	// negating operator
+	vec operator-(){
+		return vec(-t[0], 
+			   -t[1],  
+			   -t[2]);
+	}
+	
 	
 
 private:

@@ -63,6 +63,14 @@ public:
 		    t[3] - a.t[3]);
 	}
 
+	// negating operator
+	tuple operator-(){
+		return tuple(-t[0], 
+			   -t[1],  
+			   -t[2],  
+			   -t[3]);
+	}
+
 };
 
 #endif

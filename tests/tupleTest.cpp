@@ -186,3 +186,27 @@ TEST_CASE( "Testing SUBTRACTION of vector - vector ", "[single-file]" ) {
 	REQUIRE(((a - b) == d) == false);
 
 }
+
+TEST_CASE( "Testing Negating tuple", "[single-file]" ) {
+	tuple a = tuple(1, -2, 3, -4);
+	tuple b = tuple(-1, 2, -3, 4);
+	tuple c = tuple(-1, -2, -3, 4);
+
+	// Negation test
+	REQUIRE((-a == b) == true);
+	REQUIRE((a == -b) == true);
+	REQUIRE((-a == c) == false);
+
+}
+
+TEST_CASE( "Testing Negating vector", "[single-file]" ) {
+	vec a = vec(1, -2, 3);
+	vec b = vec(-1, 2, -3);
+	vec c = vec(-1, -2, -3);
+
+	// Negation test
+	REQUIRE((-a == b) == true);
+	REQUIRE((a == -b) == true);
+	REQUIRE((-a == c) == false);
+
+}
