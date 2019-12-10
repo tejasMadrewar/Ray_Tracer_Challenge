@@ -71,6 +71,27 @@ public:
 			   -t[3]);
 	}
 
+	// scalar division
+	tuple operator/(float a){
+		return tuple(t[0]/a, 
+			     t[1]/a,  
+			     t[2]/a,  
+			     t[3]/a);
+	}
+	// scalar multiplication
+	friend tuple operator*(tuple a, float b){
+		return tuple(a.t[0]*b, 
+			   a.t[1]*b,  
+			   a.t[2]*b,  
+			   a.t[3]*b);
+	}
+	friend tuple operator*(float b, tuple a){
+		return tuple(a.t[0]*b, 
+			   a.t[1]*b,  
+			   a.t[2]*b,  
+			   a.t[3]*b);
+	}
+
 };
 
 #endif

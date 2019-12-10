@@ -210,3 +210,23 @@ TEST_CASE( "Testing Negating vector", "[single-file]" ) {
 	REQUIRE((-a == c) == false);
 
 }
+
+TEST_CASE( "Testing Scalar MULTIPLICATION  with tuple", "[single-file]" ) {
+	tuple a = tuple(1, -2, 3, -4);
+	tuple b = tuple(3.5, -7, 10.5, -14);
+	tuple c = tuple(0.5, -1, 1.5, -2);
+
+	// scalar multiplication test
+	REQUIRE(((a * 3.5 ) == b) == true);
+	REQUIRE(((a * 0.5 ) == c) == true);
+
+}
+
+TEST_CASE( "Testing Scalar DIVIDING  with tuple", "[single-file]" ) {
+	tuple a = tuple(1, -2, 3, -4);
+	tuple b = tuple(0.5, -1, 1.5, -2);
+
+	// scalar divison test
+	REQUIRE(((a / 2 ) == b) == true);
+
+}
