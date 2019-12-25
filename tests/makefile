@@ -1,12 +1,14 @@
-CC = g++
-CCFLAGS = -s -std=c++11 
-OBJECTS = tupleTest.o tuple.o point.o vec.o catchMain.o
+#CC = g++
+CC = clang++
+CLANG_FORMAT = clang-format
+CCFLAGS = -std=c++11 
+OBJECTS = tupleTest.o tuple.o point.o vec.o color.o canvas.o catchMain.o
 
-.PHONY: clean all test
+.PHONY: clean all test format
 
 all: test
 
-tupleTest: $(OBJECTS)
+tupleTest.exe: $(OBJECTS)
 	$(CC) $(CCFLAGS) $(OBJECTS) -o $@
 
 
@@ -18,8 +20,11 @@ tupleTest: $(OBJECTS)
 %.o: ..\src\%.cpp ..\src\%.h
 	$(CC) $(CCFLAGS) -c $< 
 
-test: tupleTest
+test: tupleTest.exe
 	tupleTest.exe -r console 
 
+format:
+	$(CLANG_FORMAT) -i *.cpp
+	$(CLANG_FORMAT) -i ..\src\*.*
 clean:
 	del *.o *.exe
