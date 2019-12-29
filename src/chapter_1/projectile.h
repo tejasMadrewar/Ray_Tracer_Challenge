@@ -10,6 +10,12 @@ public:
     p1 = ip;
     v1 = iv;
   }
+
+  projectile(const projectile& a){
+	  p1 = a.p1;
+	  v1 = a.v1;
+  }
+
   point position() { return p1; }
   vec velo() { return v1; }
   void print() {

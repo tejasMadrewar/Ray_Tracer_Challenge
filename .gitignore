@@ -31,5 +31,7 @@
 *.out
 *.app
 
-# ppm files
+# other files
 *.ppm
+*.ilk
+*.pdb

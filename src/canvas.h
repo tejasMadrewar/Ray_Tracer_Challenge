@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 
-#define DEBUG 0
+#define DEBUG_canvas 0
 
 class canvas {
 private:
@@ -31,10 +31,15 @@ public:
   int height() const { return Height; }
 
   color pixel_at(const int w, const int h) const {
+    if(w >= Width || h >= Height || w < 0 || h < 0) { return color(0,0,0);}
     return arr.at((h * Width) + w);
   }
 
   void write_pixel(const int w, const int h, const color col) {
+#if DEBUG_canvas
+    std::cout << "writing_pixel: (" << w << "," << h << ")" << "\n";
+#endif
+    if(w >= Width || h >= Height || w < 0 || h < 0) { return;}
     arr.at((h * Width) + w) = col;
   }
 
@@ -45,7 +50,7 @@ public:
       newValue = 0;
     if (oldValue > 1)
       newValue = 255;
-#if DEBUG
+#if DEBUG_canvas_1
     std::cout << " oldValue: " << oldValue << " newValue : " << newValue
               << "\n";
 #endif
@@ -54,7 +59,7 @@ public:
 
   int canvas_to_ppm(std::string filename = "OUTPUT.ppm", int max = 255) {
 
-#if DEBUG
+#if DEBUG_canvas_1
     for (int i = 0; i < Height; i++) {
       for (int j = 0; j < Width; j++) {
 
@@ -75,6 +80,9 @@ public:
     outf << max << "\n";
     // body
     int counter = 0;
+#if DEBUG_canvas
+    std::cout << "canvas_to_ppm:\n";
+#endif
     for (int i = 0; i < Height; i++) {
       for (int j = 0; j < Width; j++) {
         outf
@@ -82,6 +90,13 @@ public:
             << fix_range(arr.at((i * Width) + j).red()) << " "
             << fix_range(arr.at((i * Width) + j).green()) << " "
             << fix_range(arr.at((i * Width) + j).blue()) << " ";
+
+#if DEBUG_canvas
+    std::cout << "(" << j << "," << i << ")" << " color:(";
+    arr.at((i * Width) + j).print();
+    std::cout << ")\n";
+
+#endif
 
         counter++;
         if (counter % 5 == 0) {
