@@ -31,15 +31,20 @@ public:
   int height() const { return Height; }
 
   color pixel_at(const int w, const int h) const {
-    if(w >= Width || h >= Height || w < 0 || h < 0) { return color(0,0,0);}
+    if (w >= Width || h >= Height || w < 0 || h < 0) {
+      return color(0, 0, 0);
+    }
     return arr.at((h * Width) + w);
   }
 
   void write_pixel(const int w, const int h, const color col) {
 #if DEBUG_canvas
-    std::cout << "writing_pixel: (" << w << "," << h << ")" << "\n";
+    std::cout << "writing_pixel: (" << w << "," << h << ")"
+              << "\n";
 #endif
-    if(w >= Width || h >= Height || w < 0 || h < 0) { return;}
+    if (w >= Width || h >= Height || w < 0 || h < 0) {
+      return;
+    }
     arr.at((h * Width) + w) = col;
   }
 
@@ -92,9 +97,10 @@ public:
             << fix_range(arr.at((i * Width) + j).blue()) << " ";
 
 #if DEBUG_canvas
-    std::cout << "(" << j << "," << i << ")" << " color:(";
-    arr.at((i * Width) + j).print();
-    std::cout << ")\n";
+        std::cout << "(" << j << "," << i << ")"
+                  << " color:(";
+        arr.at((i * Width) + j).print();
+        std::cout << ")\n";
 
 #endif
 

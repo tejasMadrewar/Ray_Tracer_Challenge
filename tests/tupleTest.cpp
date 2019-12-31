@@ -1,11 +1,12 @@
 #include "../src/tuple.h"
 #include "../src/canvas.h"
 #include "../src/color.h"
+#include "../src/mat.h"
 #include "../src/point.h"
 #include "../src/vec.h"
 #include "catch2/catch.hpp"
 
-TEST_CASE("TUPLE CONSTRUCTOR and accesing values", "[single-file]") {
+TEST_CASE("TUPLE CONSTRUCTOR and accesing values", "[single-file][tuple]") {
   tuple a = tuple();
   tuple b = tuple(1, 2, 3, 0);
   tuple c = tuple(1, 2, 3, 1);
@@ -27,7 +28,7 @@ TEST_CASE("TUPLE CONSTRUCTOR and accesing values", "[single-file]") {
   REQUIRE(c.isVector() == false);
 }
 
-TEST_CASE("Testing POINT CONSTRUCTOR", "[single-file]") {
+TEST_CASE("Testing POINT CONSTRUCTOR", "[single-file][point]") {
   point a = point();
   point b = point(1, 2, 3);
   REQUIRE(a.getX() == 0);
@@ -45,7 +46,7 @@ TEST_CASE("Testing POINT CONSTRUCTOR", "[single-file]") {
   REQUIRE(b.isVector() == false);
 }
 
-TEST_CASE("Testing VECTOR CONSTRUCTOR", "[single-file]") {
+TEST_CASE("Testing VECTOR CONSTRUCTOR", "[single-file][vector]") {
   vec a = vec();
   vec b = vec(1, 2, 3);
   REQUIRE(a.getX() == 0);
@@ -63,7 +64,7 @@ TEST_CASE("Testing VECTOR CONSTRUCTOR", "[single-file]") {
   REQUIRE(b.isVector() == true);
 }
 
-TEST_CASE("Testing COMPARISION of TUPLE", "[Single-file]") {
+TEST_CASE("Testing COMPARISION of TUPLE", "[single-file][tuple]") {
   tuple a = tuple(4.3, -4.2, 3.1, 1.0);
   tuple b = tuple(4.3, -4.2, 3.1, 1.0);
   tuple c = tuple(4.3, -4.1, 3.1, 1.0);
@@ -71,7 +72,8 @@ TEST_CASE("Testing COMPARISION of TUPLE", "[Single-file]") {
   REQUIRE((a == c) == false);
 }
 
-TEST_CASE("Testing COMPARISION oF TUPLE with VECTOR", "[single-file]") {
+TEST_CASE("Testing COMPARISION oF TUPLE with VECTOR",
+          "[single-file][tuple][vector]") {
   tuple a = tuple(4.3, -4.2, 3.1, 0.0);
   vec b = vec(4.3, -4.2, 3.1);
   vec d = vec(4.3, -4.1, 3.1);
@@ -88,7 +90,8 @@ TEST_CASE("Testing COMPARISION oF TUPLE with VECTOR", "[single-file]") {
   REQUIRE((d == e) == true);
 }
 
-TEST_CASE("Testing COMPARISION of TUPLE with POINT", "[single-file]") {
+TEST_CASE("Testing COMPARISION of TUPLE with POINT",
+          "[single-file][tuple][point]") {
   tuple a = tuple(4.3, -4.2, 3.1, 1.0);
   point b = point(4.3, -4.2, 3.1);
   point d = point(4.3, -4.1, 3.1);
@@ -105,7 +108,8 @@ TEST_CASE("Testing COMPARISION of TUPLE with POINT", "[single-file]") {
   REQUIRE((d == e) == true);
 }
 
-TEST_CASE("Testing COMPARISION of VECTOR with POINT", "[single-file]") {
+TEST_CASE("Testing COMPARISION of VECTOR with POINT",
+          "[single-file][vector][point]") {
   vec a = vec(4.3, -4.2, 3.1);
   point b = point(4.3, -4.2, 3.1);
 
@@ -114,7 +118,7 @@ TEST_CASE("Testing COMPARISION of VECTOR with POINT", "[single-file]") {
   REQUIRE((b == a) == false);
 }
 
-TEST_CASE("Testing ADDITION of TUPLE ", "[single-file]") {
+TEST_CASE("Testing ADDITION of TUPLE ", "[single-file][tuple]") {
   tuple a = tuple(3, -2, 5, 1);
   tuple b = tuple(-2, 3, 1, 0);
   tuple c = tuple(1, 1, 6, 1);
@@ -125,7 +129,7 @@ TEST_CASE("Testing ADDITION of TUPLE ", "[single-file]") {
   REQUIRE(((a + b) == d) == false);
 }
 
-TEST_CASE("Testing SUBTRACTION of TUPLE ", "[single-file]") {
+TEST_CASE("Testing SUBTRACTION of TUPLE ", "[single-file][tuple]") {
   tuple a = tuple(3, 2, 1, 1);
   tuple b = tuple(5, 3, 7, 1);
   tuple c = tuple(-2, -1, -6, 0);
@@ -136,7 +140,7 @@ TEST_CASE("Testing SUBTRACTION of TUPLE ", "[single-file]") {
   REQUIRE(((a - b) == d) == false);
 }
 
-TEST_CASE("Testing SUBTRACTION of POINT ", "[single-file]") {
+TEST_CASE("Testing SUBTRACTION of POINT ", "[single-file][point]") {
   point a = point(3, 2, 1);
   point b = point(5, 6, 7);
   vec c = vec(-2, -4, -6);
@@ -147,7 +151,8 @@ TEST_CASE("Testing SUBTRACTION of POINT ", "[single-file]") {
   REQUIRE(((a - b) == d) == false);
 }
 
-TEST_CASE("Testing SUBTRACTION of POINT - VECTOR ", "[single-file]") {
+TEST_CASE("Testing SUBTRACTION of POINT - VECTOR ",
+          "[single-file][point][vector]") {
   point a = point(3, 2, 1);
   vec b = vec(5, 6, 7);
   point c = point(-2, -4, -6);
@@ -158,7 +163,7 @@ TEST_CASE("Testing SUBTRACTION of POINT - VECTOR ", "[single-file]") {
   REQUIRE(((a - b) == d) == false);
 }
 
-TEST_CASE("Testing SUBTRACTION of VECTOR - VECTOR ", "[single-file]") {
+TEST_CASE("Testing SUBTRACTION of VECTOR - VECTOR ", "[single-file][vector]") {
   vec a = vec(3, 2, 1);
   vec b = vec(5, 6, 7);
   vec c = vec(-2, -4, -6);
@@ -169,7 +174,7 @@ TEST_CASE("Testing SUBTRACTION of VECTOR - VECTOR ", "[single-file]") {
   REQUIRE(((a - b) == d) == false);
 }
 
-TEST_CASE("Testing NEGATING TUPLE", "[single-file]") {
+TEST_CASE("Testing NEGATING TUPLE", "[single-file][tuple]") {
   tuple a = tuple(1, -2, 3, -4);
   tuple b = tuple(-1, 2, -3, 4);
   tuple c = tuple(-1, -2, -3, 4);
@@ -180,7 +185,7 @@ TEST_CASE("Testing NEGATING TUPLE", "[single-file]") {
   REQUIRE((-a == c) == false);
 }
 
-TEST_CASE("Testing NEGATING VECTOR", "[single-file]") {
+TEST_CASE("Testing NEGATING VECTOR", "[single-file][vector]") {
   vec a = vec(1, -2, 3);
   vec b = vec(-1, 2, -3);
   vec c = vec(-1, -2, -3);
@@ -191,7 +196,7 @@ TEST_CASE("Testing NEGATING VECTOR", "[single-file]") {
   REQUIRE((-a == c) == false);
 }
 
-TEST_CASE("Testing Scalar MULTIPLICATION with TUPLE", "[single-file]") {
+TEST_CASE("Testing Scalar MULTIPLICATION with TUPLE", "[single-file][tuple]") {
   tuple a = tuple(1, -2, 3, -4);
   tuple b = tuple(3.5, -7, 10.5, -14);
   tuple c = tuple(0.5, -1, 1.5, -2);
@@ -201,7 +206,7 @@ TEST_CASE("Testing Scalar MULTIPLICATION with TUPLE", "[single-file]") {
   REQUIRE(((a * 0.5) == c) == true);
 }
 
-TEST_CASE("Testing Scalar DIVIDING with TUPLE", "[single-file]") {
+TEST_CASE("Testing Scalar DIVIDING with TUPLE", "[single-file][tuple]") {
   tuple a = tuple(1, -2, 3, -4);
   tuple b = tuple(0.5, -1, 1.5, -2);
 
@@ -209,7 +214,7 @@ TEST_CASE("Testing Scalar DIVIDING with TUPLE", "[single-file]") {
   REQUIRE(((a / 2) == b) == true);
 }
 
-TEST_CASE("Testing MAGNITUDE with TUPLE", "[single-file]") {
+TEST_CASE("Testing MAGNITUDE with TUPLE", "[single-file][tuple]") {
   vec a = vec(1, 0, 0);
   vec b = vec(0, 1, 0);
   vec c = vec(0, 0, 1);
@@ -223,7 +228,7 @@ TEST_CASE("Testing MAGNITUDE with TUPLE", "[single-file]") {
   REQUIRE(e.mag() == Approx(sqrt(14)));
 }
 
-TEST_CASE("Testing NORMALIZATION with TUPLE", "[single-file]") {
+TEST_CASE("Testing NORMALIZATION with TUPLE", "[single-file][tuple]") {
   vec a = vec(4, 0, 0);
   vec an = a.norm();
   vec ann = vec(1, 0, 0);
@@ -240,14 +245,14 @@ TEST_CASE("Testing NORMALIZATION with TUPLE", "[single-file]") {
   REQUIRE((bn == bnnf) == false);
 }
 
-TEST_CASE("Testing DOT PRODUCT with VECTOR", "[single-file]") {
+TEST_CASE("Testing DOT PRODUCT with VECTOR", "[single-file][vector]") {
   vec a = vec(1, 2, 3);
   vec b = vec(2, 3, 4);
 
   REQUIRE(dot(a, b) == Approx(20));
 }
 
-TEST_CASE("Testing CROSS PRODUCT with VECTOR", "[single-file]") {
+TEST_CASE("Testing CROSS PRODUCT with VECTOR", "[single-file][vector]") {
   vec a = vec(1, 2, 3);
   vec b = vec(2, 3, 4);
 
@@ -308,12 +313,12 @@ TEST_CASE("Testing CANVAS WRITING A PIXEL", "[single-file][canvas]") {
   REQUIRE((a.pixel_at(2, 3) == red) == true);
 }
 
-TEST_CASE("Testing CANVAS to PPM header", "[single-file][ppm]") {
+TEST_CASE("Testing CANVAS to PPM header", "[single-file][ppm][canvas]") {
   canvas a = canvas(5, 3);
   REQUIRE(a.canvas_to_ppm("output_header.ppm") == 0);
 }
 
-TEST_CASE("Testing CANVAS to PPM data", "[single-file][ppm]") {
+TEST_CASE("Testing CANVAS to PPM data", "[single-file][ppm][canvas]") {
   canvas a = canvas(5, 3);
   color c1 = color(1.5, 0, 0);
   color c2 = color(0, 0.5, 0);
@@ -325,7 +330,8 @@ TEST_CASE("Testing CANVAS to PPM data", "[single-file][ppm]") {
   REQUIRE(a.canvas_to_ppm("output_data.ppm") == 0);
 }
 
-TEST_CASE("Testing CANVAS to PPM data[line length]", "[single-file][ppm]") {
+TEST_CASE("Testing CANVAS to PPM data[line length]",
+          "[single-file][ppm][canvas]") {
   // line length of ppm file should not be greater than 70 chars
   canvas a = canvas(10, 2);
   color c = color(1, 0.8, 0.6);

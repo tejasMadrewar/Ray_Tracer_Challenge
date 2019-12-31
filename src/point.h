@@ -9,7 +9,7 @@ private:
 public:
   point() : tuple(0, 0, 0, 1) {}
   point(float x, float y, float z) : tuple(x, y, z, 1) {}
-  point(const point& p){
+  point(const point &p) {
     t[0] = p.t[0];
     t[1] = p.t[1];
     t[2] = p.t[2];

@@ -9,7 +9,6 @@ class tuple {
   // x y z w
   // if w = 0 tuple is point
   // if w = 1 tuple is vector
-private:
 public:
   float t[4]{};
   // contructor
@@ -25,6 +24,13 @@ public:
     t[1] = y;
     t[2] = z;
     t[3] = w;
+  }
+
+  tuple(const tuple &tup) {
+    t[0] = tup.t[0];
+    t[1] = tup.t[1];
+    t[2] = tup.t[2];
+    t[3] = tup.t[3];
   }
   ~tuple() = default;
 
@@ -91,6 +97,8 @@ public:
   void print() {
     std::cout << t[0] << " " << t[1] << " " << t[2] << " " << t[3];
   }
+
+private:
 };
 
 #endif

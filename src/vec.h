@@ -7,7 +7,7 @@ class vec : public tuple {
 public:
   vec() : tuple(0, 0, 0, 0) {}
   vec(float x, float y, float z) : tuple(x, y, z, 0) {}
-  vec(const vec& v) {
+  vec(const vec &v) {
     t[0] = v.t[0];
     t[1] = v.t[1];
     t[2] = v.t[2];
