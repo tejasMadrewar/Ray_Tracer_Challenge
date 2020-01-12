@@ -11,11 +11,13 @@ public:
     t[0] = v.t[0];
     t[1] = v.t[1];
     t[2] = v.t[2];
+    t[3] = v.t[3];
   }
   vec(const tuple tup) {
     t[0] = tup.t[0];
     t[1] = tup.t[1];
     t[2] = tup.t[2];
+    t[3] = tup.t[3];
   }
 
   ~vec() {}

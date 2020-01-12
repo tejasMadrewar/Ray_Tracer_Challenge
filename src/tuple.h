@@ -74,10 +74,12 @@ public:
   auto operator/(float a) -> tuple {
     return tuple(t[0] / a, t[1] / a, t[2] / a, t[3] / a);
   }
+
   // scalar multiplication
   friend auto operator*(const tuple &a, float b) -> tuple {
     return tuple(a.t[0] * b, a.t[1] * b, a.t[2] * b, a.t[3] * b);
   }
+
   friend auto operator*(float b, const tuple &a) -> tuple {
     return tuple(a.t[0] * b, a.t[1] * b, a.t[2] * b, a.t[3] * b);
   }

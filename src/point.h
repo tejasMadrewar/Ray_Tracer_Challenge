@@ -13,11 +13,13 @@ public:
     t[0] = p.t[0];
     t[1] = p.t[1];
     t[2] = p.t[2];
+    t[3] = p.t[3];
   }
   point(const tuple tup) {
     t[0] = tup.t[0];
     t[1] = tup.t[1];
     t[2] = tup.t[2];
+    t[3] = tup.t[3];
   }
   ~point() {}
 

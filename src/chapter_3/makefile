@@ -2,16 +2,19 @@
 CC = clang++
 CLANG_FORMAT = clang-format
 CCFLAGS = -std=c++11 -g
-OBJECTS = main.o tick.o canvas.o drawProjectile.o
+OBJECTS = 
+
+SRC = $(wildcard *.cpp)
+OBJ = $(patsubst %.cpp,%.o,$(SRC))
+
+OBJECTS += $(OBJ)
 
 .PHONY: clean all format
 
 all: main
 
-#projectile.exe: main.cpp projectile.h tick.h env.h
 main.exe: $(OBJECTS)
 	$(CC) $(CCFLAGS) $^ -o $@
-#$(CC) $(CCFLAGS) $< -o $@
 
 main: main.exe
 	main.exe
@@ -22,11 +25,11 @@ main: main.exe
 %.o:../%.cpp ../%.h
 	$(CC) $(CCFLAGS) -c $< -o $@
 
-%.o: ../chapter_1/%.cpp ../chapter_1/%.h
-	$(CC) $(CCFLAGS) -c $< -o $@
-
 %.o:%.cpp
 	$(CC) $(CCFLAGS) -c $< -o $@
+
+format:
+	$(CLANG_FORMAT) -i *.cpp
 
 clean:
 	del *.o *.exe *.ppm *.ilk *.pdb

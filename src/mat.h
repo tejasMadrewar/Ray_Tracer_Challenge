@@ -156,7 +156,7 @@ public:
     return ans;
   }
 
-  mat Identity(int size) { // make Identity matrix of given size
+  static mat Identity(int size) { // make Identity matrix of given size
     mat result(size);
     result.Col = size;
     result.Row = size;
