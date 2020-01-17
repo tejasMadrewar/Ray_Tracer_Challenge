@@ -24,14 +24,18 @@ mat.o: tuple.o
 canvas.o: color.o
 transform.o: mat.o
 ray.o: point.o vec.o mat.o
-sphere.o: ray.o object.o intersection.o mat.o
+sphere.o: ray.o object.o intersection.o mat.o material.o
 intersection.o: object.o
+light.o: color.o point.o
+material.o: color.o light.o
 
 tupleTest.o: tuple.o vec.o point.o color.o canvas.o
 matTest.o: mat.o
-transformTest.o: transform.o mat.o
+transformTest.o: transform.o
 sphereTest.o: sphere.o
 intersectionTest.o: sphere.o intersection.o
+lightTest.o: light.o
+materialTest.o: material.o
 
 # pattern rule for compiling the tests file
 %.o: %.cpp

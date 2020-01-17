@@ -1,5 +1,6 @@
 #include "./intersection.h"
 #include "./mat.h"
+#include "./material.h"
 #include "./object.h"
 #include "./ray.h"
 #include "./tuple.h"
@@ -23,8 +24,8 @@ public:
   // find intersection
   std::vector<intersection> intersect(ray r) {
 
-    // transforming ray by inverse of SphereTransform
-    r = SphereTransform.inverse() * r;
+    // transforming ray by inverse of sphereTransform
+    r = sphereTransform.inverse() * r;
     std::vector<intersection> xs;
     float a, b, c, discirminant;
     vec sphere_to_ray = r.origin - point(0, 0, 0);
@@ -68,13 +69,26 @@ public:
   }
 
   // set and get sphere transform
-  void setTransform(mat m) { SphereTransform = m; }
-  mat getTransform() { return SphereTransform; }
+  void setTransform(mat m) { sphereTransform = m; }
+  mat getTransform() { return sphereTransform; }
+
+  // get normal at point assume point is on sphere
+  vec normalAt(point p) {
+    point objPoint = sphereTransform.inverse() * p;
+    vec normal = objPoint - origin;
+    vec worldNormal = (sphereTransform.inverse().transpose() * normal);
+    worldNormal.setW(0);       // due to transpose
+    return worldNormal.norm(); // alwasy return normalize vector
+  }
+
+  void setMaterial(material n) { m = n; }
+  material getMaterial() { return m; }
 
 private:
   float radius = 1;
   point origin = point(0, 0, 0);
-  mat SphereTransform = mat::Identity(4);
+  mat sphereTransform = mat::Identity(4);
+  material m;
 };
 
 #endif

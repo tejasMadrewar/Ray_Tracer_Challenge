@@ -35,10 +35,10 @@ public:
   ~tuple() = default;
 
   // get value
-  auto getX() -> float { return t[0]; }
-  auto getY() -> float { return t[1]; }
-  auto getZ() -> float { return t[2]; }
-  auto getW() -> float { return t[3]; }
+  auto getX() -> float const { return t[0]; }
+  auto getY() -> float const { return t[1]; }
+  auto getZ() -> float const { return t[2]; }
+  auto getW() -> float const { return t[3]; }
 
   // set value
   void setX(float a) { t[0] = a; }

@@ -1,6 +1,8 @@
 #include "../canvas.h"
 #include "../intersection.h"
+#include "../light.h"
 #include "../mat.h"
+#include "../material.h"
 #include "../point.h"
 #include "../sphere.h"
 #include "../transform.h"
@@ -16,11 +18,22 @@ int main() {
   float half = wall_size / 2;
 
   float pixel_size = wall_size / canvas_size;
+  // set sphere
   sphere s;
+  material m;
+  m.col = color(1, 0.2, 1);
+  s.setMaterial(m);
+
+  // set light
+  pointLight l;
+  l.intensity = color(1, 1, 1);
+  // l.position = point(-10, 10, -10);
+  l.position = point(10, -10, -10);
+
   transform t;
 
   canvas c(canvas_size, canvas_size);
-  color red(1, 0, 0);
+  color col(1, 0, 0);
   ray r(rayOrigin, vec(0, 0, 0));
 
   float world_x = 0;
@@ -28,6 +41,10 @@ int main() {
   point position(0, 0, 0);
   std::vector<intersection> xs;
   intersection inter;
+
+  vec normalv;
+  point positionp;
+  vec eyev;
 
 #if DEBUG
   std::cout << "wall_z:" << wall_z << "\n"
@@ -56,7 +73,12 @@ int main() {
 
       // check if ray is hit to sphere
       if (inter.obj != nullptr) {
-        c.write_pixel(i, c.height() - j, red);
+        // lightening
+        positionp = r.position(inter.intersected);
+        normalv = s.normalAt(positionp);
+        eyev = -r.direction;
+        col = lightening(m, l, positionp, eyev, normalv);
+        c.write_pixel(i, c.height() - j, col);
       }
     }
   }
@@ -81,7 +103,12 @@ int main() {
 
       // check if ray is hit to sphere
       if (inter.obj != nullptr) {
-        c1.write_pixel(i, c.height() - j, red);
+        // lightening
+        positionp = r.position(inter.intersected);
+        normalv = s.normalAt(positionp);
+        eyev = -r.direction;
+        col = lightening(m, l, positionp, eyev, normalv);
+        c1.write_pixel(i, c.height() - j, col);
       }
     }
   }
@@ -104,7 +131,12 @@ int main() {
       inter = hit(xs);
 
       if (inter.obj != nullptr) {
-        c2.write_pixel(i, c.height() - j, red);
+        // lightening
+        positionp = r.position(inter.intersected);
+        normalv = s.normalAt(positionp);
+        eyev = -r.direction;
+        col = lightening(m, l, positionp, eyev, normalv);
+        c2.write_pixel(i, c.height() - j, col);
       }
     }
   }
@@ -127,7 +159,12 @@ int main() {
       inter = hit(xs);
 
       if (inter.obj != nullptr) {
-        c3.write_pixel(i, c.height() - j, red);
+        // lightening
+        positionp = r.position(inter.intersected);
+        normalv = s.normalAt(positionp);
+        eyev = -r.direction;
+        col = lightening(m, l, positionp, eyev, normalv);
+        c3.write_pixel(i, c.height() - j, col);
       }
     }
   }
@@ -150,10 +187,14 @@ int main() {
       inter = hit(xs);
 
       if (inter.obj != nullptr) {
-        c4.write_pixel(i, c.height() - j, red);
+        // lightening
+        positionp = r.position(inter.intersected);
+        normalv = s.normalAt(positionp);
+        eyev = -r.direction;
+        col = lightening(m, l, positionp, eyev, normalv);
+        c4.write_pixel(i, c.height() - j, col);
       }
     }
   }
   c4.canvas_to_ppm("SphereShrinkXSkew.ppm");
-  return 0;
 }

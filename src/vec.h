@@ -47,6 +47,11 @@ public:
     return vec(t[0] / magnitude, t[1] / magnitude, t[2] / magnitude);
   }
 
+  // reflect
+  auto reflect(vec normal) -> vec {
+    return vec(*this - normal * 2 * dot(*this, normal));
+  }
+
   // cross
   friend auto cross(const tuple &a, const tuple &b) -> vec {
     return vec(a.t[1] * b.t[2] - a.t[2] * b.t[1],

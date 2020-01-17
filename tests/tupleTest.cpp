@@ -344,3 +344,21 @@ TEST_CASE("Testing CANVAS to PPM data[line length]",
     REQUIRE(a.canvas_to_ppm("output_data_test_line.ppm") == 0);
   }
 }
+
+TEST_CASE("REFLECTING A VECTOR APPROACHING AT 45",
+          "[single-file][vec][reflect]") {
+  vec v(1, -1, 0);
+  vec n(0, 1, 0);
+  vec result = v.reflect(n);
+
+  REQUIRE((result == vec(1, 1, 0)) == true);
+}
+TEST_CASE("REFLECTING A VECTOR OFF A SLANTED SURFACE",
+          "[single-file][vec][reflect]") {
+  vec v(0, -1, 0);
+  float f = sqrt(2) / 2;
+  vec n(f, f, 0);
+  vec result = v.reflect(n);
+
+  REQUIRE((result == vec(1, 0, 0)) == true);
+}

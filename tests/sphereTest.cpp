@@ -107,3 +107,66 @@ TEST_CASE("INTERSECTING A SCALED SPHERE WITH A RAY",
   REQUIRE(xs.at(0).intersected == 3);
   REQUIRE(xs.at(1).intersected == 7);
 }
+
+TEST_CASE("THE NORMAL ON A SPHERE AT A POINT ON THE X AXIS",
+          "[single-file][sphere]") {
+  sphere s;
+  REQUIRE((s.normalAt(point(1, 0, 0)) == vec(1, 0, 0)) == true);
+}
+
+TEST_CASE("THE NORMAL ON A SPHERE AT A POINT ON THE Y AXIS",
+          "[single-file][sphere]") {
+  sphere s;
+  REQUIRE((s.normalAt(point(0, 1, 0)) == vec(0, 1, 0)) == true);
+}
+
+TEST_CASE("THE NORMAL ON A SPHERE AT A POINT ON THE Z AXIS",
+          "[single-file][sphere]") {
+  sphere s;
+  REQUIRE((s.normalAt(point(0, 0, 1)) == vec(0, 0, 1)) == true);
+}
+
+TEST_CASE("THE NORMAL ON A SPHERE AT A NON AXIAL POINT",
+          "[single-file][sphere]") {
+  sphere s;
+  float a = sqrt(3) / 3;
+  REQUIRE((s.normalAt(point(a, a, a)) == vec(a, a, a)) == true);
+}
+
+TEST_CASE("COMPUTING THE NORMAL ON A TRANSLATED SPHERE",
+          "[single-file][sphere]") {
+  sphere s;
+  transform t;
+  s.setTransform(t.translate(0, 1, 0));
+  vec result = s.normalAt(point(0, 1.70711, -0.70711));
+
+  REQUIRE((result == vec(0, 0.70711, -0.70711)) == true);
+}
+
+TEST_CASE("COMPUTING THE NORMAL ON A TRANSFORMED SPHERE",
+          "[single-file][sphere]") {
+  sphere s;
+  transform t;
+  mat m = t.scale(1, 0.5, 1) * t.rotZ(PI / 5);
+  s.setTransform(m);
+  float f = sqrt(2) / 2;
+  vec result = s.normalAt(point(0, f, -f));
+
+  REQUIRE((result == vec(0, 0.97014, -0.24254)) == true);
+}
+
+TEST_CASE("A SPHERE HAS DEFAULT MATERIAL", "[single-file][sphere]") {
+  sphere s;
+  material m;
+
+  REQUIRE((s.getMaterial() == m) == true);
+}
+
+TEST_CASE("A SPHERE MAY BE ASSIGNED A MATERIAL", "[single-file][sphere]") {
+  sphere s;
+  material m;
+  m.ambient = 1;
+  s.setMaterial(m);
+
+  REQUIRE((s.getMaterial() == m) == true);
+}
