@@ -109,3 +109,23 @@ TEST_CASE("LIGHTENING WITH THE LIGHT BEHIND THE SURFACE",
 
   REQUIRE((result == color(0.1, 0.1, 0.1)) == true);
 }
+
+TEST_CASE("LIGHTENING WITH THE SURFACE IN SHADOW", "[single-file][material]") {
+  material m;
+  point position(0, 0, 0);
+  vec eyev, normalv;
+  pointLight l;
+  color result;
+  bool in_shadow;
+
+  eyev = vec(0, 0, -1);
+  normalv = vec(0, 0, -1);
+
+  l.position = point(0, 0, -10);
+  l.intensity = color(1, 1, 1);
+
+  in_shadow = true;
+  result = lightening(m, l, position, eyev, normalv, in_shadow);
+
+  REQUIRE((result == color(0.1, 0.1, 0.1)) == true);
+}

@@ -1,4 +1,6 @@
 #include "./object.h"
+#include "./ray.h"
+
 #include <iostream>
 #include <vector>
 
@@ -35,7 +37,37 @@ public:
       return false;
   }
 
+  // less than operator for sorting
+  bool operator<(const intersection &i) {
+    if (this->intersected < i.intersected)
+      return true;
+    else
+      return false;
+  }
+
 private:
+};
+
+// structure to hold preComputed data of intersection
+class preComputed {
+public:
+  preComputed() {}
+
+  preComputed(preComputed &p) {
+    objptr = p.objptr;
+    position = p.position;
+    eyev = p.eyev;
+    normalv = p.normalv;
+    inside = p.inside;
+    overPoint = p.overPoint;
+  }
+
+  object *objptr;
+  point position;
+  point overPoint;
+  vec eyev;
+  vec normalv;
+  bool inside = false;
 };
 
 // make function global
@@ -74,6 +106,25 @@ intersection hit(std::vector<intersection> &v) {
     return result;
   } else
     return intersection(0, nullptr);
+}
+
+preComputed prepareComputation(intersection i, ray r) {
+  float EPSILON = 0.001;
+  preComputed result;
+  result.objptr = i.obj;
+  result.eyev = -r.direction;
+  result.position = r.position(i.intersected);
+  result.normalv = i.obj->normalAt(result.position);
+  if (dot(result.normalv, result.eyev) <
+      0) { // check point is inside of outside
+    result.inside = true;
+    result.normalv = -result.normalv;
+  } else {
+    result.inside = false;
+  }
+  result.overPoint = result.position + (result.normalv * EPSILON);
+
+  return result;
 }
 
 } // namespace

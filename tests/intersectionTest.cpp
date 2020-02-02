@@ -1,5 +1,6 @@
 #include "../src/intersection.h"
 #include "../src/sphere.h"
+#include "../src/transform.h"
 #include "./catch2/catch.hpp"
 #include <vector>
 
@@ -88,4 +89,55 @@ TEST_CASE("THE HIT IS ALWAYS THE LOWEST NON NEGATIVE INTERSECTION",
   i = hit(xs);
 
   REQUIRE((i == i4) == true);
+}
+
+TEST_CASE("PRECOMPUTING THE STATE OF AN INTERSECTION",
+          "[single-file][intersections]") {
+  sphere s;
+  intersection i(4, &s);
+  ray r(point(0, 0, -5), vec(0, 0, 1));
+  preComputed pre;
+  pre = prepareComputation(i, r);
+
+  REQUIRE((pre.eyev == vec(0, 0, -1)) == true);
+  REQUIRE((pre.objptr == &s) == true);
+  REQUIRE((pre.position == point(0, 0, -1)) == true);
+  REQUIRE((pre.normalv == vec(0, 0, -1)) == true);
+}
+
+TEST_CASE("THE HIT, WHEN AN INTERSECTION OCCURS ON THE OUTSIDE",
+          "[single-file][intersections]") {
+  sphere s;
+  intersection i(4, &s);
+  ray r(point(0, 0, -5), vec(0, 0, 1));
+  preComputed pre;
+  pre = prepareComputation(i, r);
+
+  REQUIRE((pre.inside == false) == true);
+}
+
+TEST_CASE("THE HIT, WHEN AN INTERSECTION OCCURS ON THE INSIDE",
+          "[single-file][intersections]") {
+  sphere s;
+  intersection i(1, &s);
+  ray r(point(0, 0, 0), vec(0, 0, 1));
+  preComputed pre;
+  pre = prepareComputation(i, r);
+
+  REQUIRE((pre.position == point(0, 0, 1)) == true);
+  REQUIRE((pre.eyev == vec(0, 0, -1)) == true);
+  REQUIRE((pre.inside == true) == true);
+  REQUIRE((pre.normalv == vec(0, 0, -1)) == true);
+}
+
+TEST_CASE("THE HIT SHOULD OFFSET THE POINT", "[single-file][intersections]") {
+  ray r(point(0, 0, -5), vec(0, 0, 1));
+  sphere s;
+  transform t;
+  s.setTransform(t.translate(0, 0, 1));
+  intersection i(5, &s);
+  preComputed pre;
+  pre = prepareComputation(i, r);
+  REQUIRE((pre.overPoint.t[2] < (-0.0001 / 2)) == true);
+  REQUIRE((pre.position.t[2] > pre.overPoint.t[2]) == true);
 }

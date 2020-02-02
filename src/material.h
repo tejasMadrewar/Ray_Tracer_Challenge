@@ -3,6 +3,8 @@
 #include "./color.h"
 #include "./light.h"
 
+#define MATERIAL_DEBUG 0
+
 class material {
 
 public:
@@ -33,7 +35,7 @@ public:
 
 namespace {
 color lightening(material m, pointLight l, point position, vec eyev,
-                 vec normalv) {
+                 vec normalv, bool in_shadow = false) {
   color ambient, diffuse, specular, effective_color, result;
   vec lightv, reflectv;
   float light_dot_normal, reflect_dot_eye, factor;
@@ -46,6 +48,11 @@ color lightening(material m, pointLight l, point position, vec eyev,
 
   // compute the ambient contribution
   ambient = effective_color * m.ambient;
+
+  // condition point is in shadow
+  if (in_shadow) {
+    return ambient;
+  }
 
   // light_dot_normal represents the cosine fo the angle between the light
   // vector and the normal vector. A negative number means the light is on the
@@ -73,6 +80,19 @@ color lightening(material m, pointLight l, point position, vec eyev,
       specular = l.intensity * m.specular * factor;
     }
   }
+
+#if MATERIAL_DEBUG
+  std::cout << "\n-------------------\n"
+            << "material lightening\n"
+            << "-------------------"
+            << "\nambient :";
+  ambient.print();
+  std::cout << "\ndiffuse :";
+  diffuse.print();
+  std::cout << "\nspecular :";
+  specular.print();
+  std::cout << "\n";
+#endif
 
   result = ambient + diffuse + specular;
 

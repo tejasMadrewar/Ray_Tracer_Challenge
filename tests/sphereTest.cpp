@@ -111,26 +111,30 @@ TEST_CASE("INTERSECTING A SCALED SPHERE WITH A RAY",
 TEST_CASE("THE NORMAL ON A SPHERE AT A POINT ON THE X AXIS",
           "[single-file][sphere]") {
   sphere s;
-  REQUIRE((s.normalAt(point(1, 0, 0)) == vec(1, 0, 0)) == true);
+  point p(1, 0, 0);
+  REQUIRE((s.normalAt(p) == vec(1, 0, 0)) == true);
 }
 
 TEST_CASE("THE NORMAL ON A SPHERE AT A POINT ON THE Y AXIS",
           "[single-file][sphere]") {
   sphere s;
-  REQUIRE((s.normalAt(point(0, 1, 0)) == vec(0, 1, 0)) == true);
+  point p(0, 1, 0);
+  REQUIRE((s.normalAt(p) == vec(0, 1, 0)) == true);
 }
 
 TEST_CASE("THE NORMAL ON A SPHERE AT A POINT ON THE Z AXIS",
           "[single-file][sphere]") {
   sphere s;
-  REQUIRE((s.normalAt(point(0, 0, 1)) == vec(0, 0, 1)) == true);
+  point p(0, 0, 1);
+  REQUIRE((s.normalAt(p) == vec(0, 0, 1)) == true);
 }
 
 TEST_CASE("THE NORMAL ON A SPHERE AT A NON AXIAL POINT",
           "[single-file][sphere]") {
   sphere s;
   float a = sqrt(3) / 3;
-  REQUIRE((s.normalAt(point(a, a, a)) == vec(a, a, a)) == true);
+  point p(a, a, a);
+  REQUIRE((s.normalAt(p) == vec(a, a, a)) == true);
 }
 
 TEST_CASE("COMPUTING THE NORMAL ON A TRANSLATED SPHERE",
@@ -138,7 +142,8 @@ TEST_CASE("COMPUTING THE NORMAL ON A TRANSLATED SPHERE",
   sphere s;
   transform t;
   s.setTransform(t.translate(0, 1, 0));
-  vec result = s.normalAt(point(0, 1.70711, -0.70711));
+  point p(0, 1.70711, -0.70711);
+  vec result = s.normalAt(p);
 
   REQUIRE((result == vec(0, 0.70711, -0.70711)) == true);
 }
@@ -150,7 +155,8 @@ TEST_CASE("COMPUTING THE NORMAL ON A TRANSFORMED SPHERE",
   mat m = t.scale(1, 0.5, 1) * t.rotZ(PI / 5);
   s.setTransform(m);
   float f = sqrt(2) / 2;
-  vec result = s.normalAt(point(0, f, -f));
+  point p(0, f, -f);
+  vec result = s.normalAt(p);
 
   REQUIRE((result == vec(0, 0.97014, -0.24254)) == true);
 }

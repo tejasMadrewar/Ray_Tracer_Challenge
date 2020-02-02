@@ -28,6 +28,9 @@ sphere.o: ray.o object.o intersection.o mat.o material.o
 intersection.o: object.o
 light.o: color.o point.o
 material.o: color.o light.o
+world.o: light.o material.o object.o
+transformation.o: point.o vec.o transform.o
+camera.o: canvas.o mat.o ray.o transformation.o world.o
 
 tupleTest.o: tuple.o vec.o point.o color.o canvas.o
 matTest.o: mat.o
@@ -36,6 +39,9 @@ sphereTest.o: sphere.o
 intersectionTest.o: sphere.o intersection.o
 lightTest.o: light.o
 materialTest.o: material.o
+worldTest.o: world.o
+transformationTest.o:transformation.o
+cameraTest.o: camera.o
 
 # pattern rule for compiling the tests file
 %.o: %.cpp

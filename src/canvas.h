@@ -19,6 +19,13 @@ public:
     Height = 0;
   }
 
+  canvas(const canvas &can) {
+    Width = can.Width;
+    Height = can.Height;
+    arr.resize(Width * Height, color());
+    arr = can.arr;
+  }
+
   canvas(int W, int H) {
     Width = W;
     Height = H;
@@ -90,11 +97,9 @@ public:
 #endif
     for (int i = 0; i < Height; i++) {
       for (int j = 0; j < Width; j++) {
-        outf
-
-            << fix_range(arr.at((i * Width) + j).red()) << " "
-            << fix_range(arr.at((i * Width) + j).green()) << " "
-            << fix_range(arr.at((i * Width) + j).blue()) << " ";
+        outf << fix_range(arr.at((i * Width) + j).red()) << " "
+             << fix_range(arr.at((i * Width) + j).green()) << " "
+             << fix_range(arr.at((i * Width) + j).blue()) << " ";
 
 #if DEBUG_canvas
         std::cout << "(" << j << "," << i << ")"

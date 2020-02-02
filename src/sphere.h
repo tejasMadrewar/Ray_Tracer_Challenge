@@ -1,3 +1,6 @@
+#ifndef SPHERE_H
+#define SPHERE_H
+
 #include "./intersection.h"
 #include "./mat.h"
 #include "./material.h"
@@ -7,25 +10,32 @@
 #include <cmath>
 #include <vector>
 
-#ifndef SPHERE_H
-#define SPHERE_H
-
 #define DEBUG_SPHERE 0
 
 class sphere : public object {
 public:
   sphere() : object() {}
+  ~sphere() {}
 
   sphere(point ori, float r) {
     origin = ori;
     radius = r;
   }
 
+  void print() {
+    std::cout << "---------------\n";
+    std::cout << "sphere id" << getID() << " \n";
+    std::cout << "---------------\n";
+    std::cout << "transform\n";
+    sphereTransform.print();
+    std::cout << "---------------\n";
+  }
+
   // find intersection
   std::vector<intersection> intersect(ray r) {
 
     // transforming ray by inverse of sphereTransform
-    r = sphereTransform.inverse() * r;
+    r = sphereTransformInverse * r;
     std::vector<intersection> xs;
     float a, b, c, discirminant;
     vec sphere_to_ray = r.origin - point(0, 0, 0);
@@ -48,15 +58,16 @@ public:
     std::cout << "\ndiscirminant " << discirminant;
 #endif
 
+    // ray is not hitting the sphere
     if (discirminant < 0) {
       return xs;
     }
 
-    xs.push_back(intersection(this));
-    xs.push_back(intersection(this));
+    xs.resize(2, intersection(this));
     xs[0].intersected = (-b - sqrt(discirminant)) / (2 * a);
     xs[1].intersected = (-b + sqrt(discirminant)) / (2 * a);
 
+    // sort
     if (xs[0].intersected > xs[1].intersected) {
       std::swap(xs[0].intersected, xs[1].intersected);
     }
@@ -69,26 +80,31 @@ public:
   }
 
   // set and get sphere transform
-  void setTransform(mat m) { sphereTransform = m; }
-  mat getTransform() { return sphereTransform; }
+  void setTransform(mat m) {
+    sphereTransform = m;
+    sphereTransformInverse = m.inverse();
+  }
+  mat getTransform() const { return sphereTransform; }
 
   // get normal at point assume point is on sphere
-  vec normalAt(point p) {
-    point objPoint = sphereTransform.inverse() * p;
+  vec normalAt(point &p) {
+    point objPoint = sphereTransformInverse * p;
     vec normal = objPoint - origin;
-    vec worldNormal = (sphereTransform.inverse().transpose() * normal);
+    vec worldNormal = (sphereTransformInverse.transpose() * normal);
     worldNormal.setW(0);       // due to transpose
-    return worldNormal.norm(); // alwasy return normalize vector
+    return worldNormal.norm(); // always return normalize vector
   }
 
   void setMaterial(material n) { m = n; }
   material getMaterial() { return m; }
 
+  material m;
+
 private:
   float radius = 1;
   point origin = point(0, 0, 0);
   mat sphereTransform = mat::Identity(4);
-  material m;
+  mat sphereTransformInverse = mat::Identity(4);
 };
 
 #endif
