@@ -4,7 +4,7 @@
 #include "../src/tuple.h"
 #include "../src/vec.h"
 #include "catch2/catch.hpp"
-#include <corecrt_math.h>
+//#include <corecrt_math.h>
 
 TEST_CASE("Testing TRANSFORM translate", "[single-file][transform]") {
   transform t;

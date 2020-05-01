@@ -1,7 +1,7 @@
 #CC = g++
 CC = clang++
 CLANG_FORMAT = clang-format
-CCFLAGS = -std=c++11 
+CCFLAGS = -std=c++14 
 #OBJECTS = main.o tick.o
 SRCFILES = $(wildcard *.cpp)
 OBJECTS = $(SRCFILES:.cpp=.o)

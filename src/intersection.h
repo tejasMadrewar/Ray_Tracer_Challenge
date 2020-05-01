@@ -1,11 +1,11 @@
-#include "./object.h"
-#include "./ray.h"
+#ifndef INTERSECTION_H
+#define INTERSECTION_H
 
+#include "./ray.h"
 #include <iostream>
 #include <vector>
 
-#ifndef INTERSECTION_H
-#define INTERSECTION_H
+class shape;
 
 #define DEBUG_INTERSECTION 0
 
@@ -15,8 +15,8 @@ public:
     obj = nullptr;
     intersected = 0;
   }
-  intersection(object *o) { obj = o; }
-  intersection(float i, object *o) {
+  intersection(shape *o) { obj = o; }
+  intersection(float i, shape *o) {
     obj = o;
     intersected = i;
   }
@@ -26,7 +26,7 @@ public:
     intersected = i.intersected;
   }
 
-  object *obj;
+  shape *obj;
   float intersected;
 
   // equality between intersection
@@ -62,7 +62,7 @@ public:
     overPoint = p.overPoint;
   }
 
-  object *objptr;
+  shape *objptr;
   point position;
   point overPoint;
   vec eyev;
@@ -108,24 +108,24 @@ intersection hit(std::vector<intersection> &v) {
     return intersection(0, nullptr);
 }
 
-preComputed prepareComputation(intersection i, ray r) {
-  float EPSILON = 0.001;
-  preComputed result;
-  result.objptr = i.obj;
-  result.eyev = -r.direction;
-  result.position = r.position(i.intersected);
-  result.normalv = i.obj->normalAt(result.position);
-  if (dot(result.normalv, result.eyev) <
-      0) { // check point is inside of outside
-    result.inside = true;
-    result.normalv = -result.normalv;
-  } else {
-    result.inside = false;
-  }
-  result.overPoint = result.position + (result.normalv * EPSILON);
-
-  return result;
-}
+// preComputed prepareComputation(intersection i, ray r) {
+//  float EPSILON = 0.001;
+//  preComputed result;
+//  result.objptr = i.obj;
+//  result.eyev = -r.direction;
+//  result.position = r.position(i.intersected);
+//  result.normalv = i.obj->normalAt(result.position);
+//  if (dot(result.normalv, result.eyev) <
+//      0) { // check point is inside of outside
+//    result.inside = true;
+//    result.normalv = -result.normalv;
+//  } else {
+//    result.inside = false;
+//  }
+//  result.overPoint = result.position + (result.normalv * EPSILON);
+//
+//  return result;
+//}
 
 } // namespace
 

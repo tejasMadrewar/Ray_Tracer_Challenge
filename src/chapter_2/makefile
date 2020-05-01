@@ -1,20 +1,17 @@
 #CC = g++
 CC = clang++
 CLANG_FORMAT = clang-format
-CCFLAGS = -std=c++11 -g
+CCFLAGS = -std=c++14 -g
 OBJECTS = main.o tick.o canvas.o drawProjectile.o
 
 .PHONY: clean all format
 
-all: main
+all: main.exe
 
 #projectile.exe: main.cpp projectile.h tick.h env.h
 main.exe: $(OBJECTS)
+#main.exe: canvas.o main.o
 	$(CC) $(CCFLAGS) $^ -o $@
-#$(CC) $(CCFLAGS) $< -o $@
-
-main: main.exe
-	main.exe
 
 %.o:%.cpp %.h
 	$(CC) $(CCFLAGS) -c $< -o $@

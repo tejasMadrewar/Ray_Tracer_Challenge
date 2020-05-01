@@ -20,8 +20,9 @@ TEST_CASE("Computing point from a distance", "[single-file][ray]") {
 TEST_CASE("Translating a ray", "[single-file][ray]") {
   ray r(point(1, 2, 3), vec(0, 1, 0));
   transform t;
+  mat m = t.translate(3, 4, 5);
 
-  ray result = t.translate(3, 4, 5) * r;
+  ray result = m * r;
   REQUIRE((result.origin == point(4, 6, 8)) == true);
   REQUIRE((result.direction == vec(0, 1, 0)) == true);
 }
@@ -29,8 +30,9 @@ TEST_CASE("Translating a ray", "[single-file][ray]") {
 TEST_CASE("Scaling a ray", "[single-file][ray]") {
   ray r(point(1, 2, 3), vec(0, 1, 0));
   transform t;
+  mat m = t.scale(2, 3, 4);
 
-  ray result = t.scale(2, 3, 4) * r;
+  ray result = m * r;
   REQUIRE((result.origin == point(2, 6, 12)) == true);
   REQUIRE((result.direction == vec(0, 3, 0)) == true);
 }

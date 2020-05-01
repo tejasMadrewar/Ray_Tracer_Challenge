@@ -1,6 +1,7 @@
 CC = clang++
 CLANG_FORMAT = clang-format
-CCFLAGS = -std=c++11 -g
+CCFLAGS = -std=c++14 -g
+#CCFLAGS = -std=c++11 -g
 
 TESTS = $(wildcard *.cpp)
 OBJTESTS = $(TESTS:.cpp=.o)
@@ -24,24 +25,32 @@ mat.o: tuple.o
 canvas.o: color.o
 transform.o: mat.o
 ray.o: point.o vec.o mat.o
-sphere.o: ray.o object.o intersection.o mat.o material.o
-intersection.o: object.o
 light.o: color.o point.o
-material.o: color.o light.o
-world.o: light.o material.o object.o
+intersection.o: ray.o
+material.o: color.o light.o stripePattern.o
+sphere.o: shape.o
+world.o: light.o material.o shape.o
 transformation.o: point.o vec.o transform.o
 camera.o: canvas.o mat.o ray.o transformation.o world.o
+shape.o: point.o vec.o ray.o mat.o material.o intersection.o
+plane.o: shape.o
+pattern.o: color.o point.o
+stripePattern.o:pattern.o
 
 tupleTest.o: tuple.o vec.o point.o color.o canvas.o
 matTest.o: mat.o
 transformTest.o: transform.o
 sphereTest.o: sphere.o
 intersectionTest.o: sphere.o intersection.o
+rayTest.o: ray.o transform.o
 lightTest.o: light.o
 materialTest.o: material.o
 worldTest.o: world.o
 transformationTest.o:transformation.o
 cameraTest.o: camera.o
+shapeTest.o: shape.o sphere.o
+planeTest.o: plane.o
+patternTest.o: pattern.o stripePattern.o
 
 # pattern rule for compiling the tests file
 %.o: %.cpp

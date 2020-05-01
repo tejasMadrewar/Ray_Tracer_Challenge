@@ -6,18 +6,23 @@ OBJECTS =
 
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp,%.o,$(SRC))
+OBJPPM = $(patsubst %.cpp,%.ppm,$(SRC))
+OBJEXE = $(patsubst %.cpp,%.exe,$(SRC))
 
-OBJECTS = camera.o canvas.o main.o world.o shape.o sphere.o plane.o
+#OBJECTS += $(OBJ)
+OBJECTS = camera.o shape.o sphere.o plane.o canvas.o world.o
+
 
 .PHONY: clean all format
 
-all: main
+#all: $(OBJPPM) $(OBJEXE)
+all: $(OBJPPM)
 
-main.exe: $(OBJECTS)
+%.exe: %.o $(OBJECTS)
 	$(CC) $(CCFLAGS) $^ -o $@
 
-main: main.exe
-	main.exe
+%.ppm: %.exe
+	$^
 
 %.o:%.cpp %.h
 	$(CC) $(CCFLAGS) -c $< -o $@

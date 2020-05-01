@@ -1,19 +1,30 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "mat.h"
 #define WORLD_DEBUG 0
 
 #include "./light.h"
 #include "./material.h"
-#include "./object.h"
+#include "./plane.h"
 #include "./sphere.h"
 #include "./transform.h"
+#include "mat.h"
 #include <algorithm>
 
 class world {
 public:
   world() {}
+  ~world() {
+    for (auto i : sVec)
+      delete i;
+  }
+  void add_sphere(const mat &trans, const material &m);
+  void add_plane(const mat &trans, const material &m);
+  void add_sphere(const mat &trans);
+  std::vector<intersection> intersect_world(ray &r);
+  color shadeHit(preComputed p);
+  color colorAt(ray r);
+  bool isShadowed(point &p);
 
   static world default_world() {
     world w;
@@ -33,124 +44,9 @@ public:
     return w;
   }
 
-  void add_sphere(const mat &trans, const material &m) {
-    sphere *s1 = new sphere();
-    s1->setMaterial(m);
-    s1->setTransform(trans);
-    this->sVec.push_back(s1);
-  }
-
-  void add_sphere(const mat &trans) {
-    sphere *s1 = new sphere();
-    s1->setTransform(trans);
-    this->sVec.push_back(s1);
-  }
-
-  ~world() {
-    for (auto i : sVec) {
-      delete i;
-    }
-  }
-
-  std::vector<intersection> intersect_world(ray r) {
-
-    std::vector<intersection> worldIntersects;
-    std::vector<intersection> temp;
-
-    for (auto i : sVec) {
-      temp = (*i).intersect(r);
-      if (temp.size() != 0) {
-        worldIntersects.insert(worldIntersects.end(), temp.begin(), temp.end());
-      }
-    }
-
-    // sort before return
-    std::sort(worldIntersects.begin(), worldIntersects.end());
-
-#if WORLD_DEBUG
-    std::cout << "----------------\n"
-              << "intersect_world \n"
-              << "----------------\n";
-    for (auto i : worldIntersects) {
-      std::cout << i.intersected << "\n";
-    }
-#endif
-
-    return worldIntersects;
-  }
-
-  color shadeHit(preComputed p) {
-    color result;
-    bool Shadowed = this->isShadowed(p.overPoint);
-    result = lightening(p.objptr->getMaterial(), worldLight, p.overPoint,
-                        p.eyev, p.normalv, Shadowed);
-
-#if WORLD_DEBUG
-    std::cout << "----------------\n"
-              << "shadeHit \n"
-              << "----------------";
-    std::cout << "\nobjptr :" << p.objptr;
-
-    std::cout << "\nMATERIAL color:";
-    p.objptr->getMaterial().col.print();
-    std::cout << "\nMATERIAL ambient : " << p.objptr->getMaterial().ambient
-              << "\nMATERIAL diffuse : " << p.objptr->getMaterial().diffuse
-              << "\nMATERIAL shiniess: " << p.objptr->getMaterial().shiniess
-              << "\nMATERIAL specular: " << p.objptr->getMaterial().specular;
-
-    std::cout << "\nWORLDlIGHT i)POSITION:";
-    worldLight.position.print();
-    std::cout << " ii)INTENSITY:";
-    worldLight.intensity.print();
-
-    std::cout << "\nPOSITION ";
-    p.position.print();
-
-    std::cout << "\nEYEV ";
-    p.position.print();
-
-    std::cout << "\nNORMALV ";
-    p.normalv.print();
-    std::cout << "\nRESULT ";
-    result.print();
-    std::cout << "\n----------------\n\n";
-#endif
-    return result;
-  }
-
-  color colorAt(ray r) {
-    std::vector<intersection> iArray = intersect_world(r);
-    intersection i = hit(iArray);
-    if (i.obj == nullptr) { // ray does not hit object
-      return color(0, 0, 0);
-    }
-    preComputed p;
-    p = prepareComputation(i, r);
-    bool Shadowed = this->isShadowed(p.overPoint);
-    return lightening(p.objptr->getMaterial(), worldLight, p.overPoint, p.eyev,
-                      p.normalv, Shadowed);
-  }
-
-  bool isShadowed(point &p) {
-    bool result = false;
-
-    vec v = worldLight.position - p;
-    float distance = v.mag();
-    vec direction = v.norm();
-
-    ray r(p, direction);
-    std::vector<intersection> Is = this->intersect_world(r);
-    intersection i = hit(Is);
-    if (i.obj != nullptr && i.intersected < distance) {
-      result = true;
-    }
-    return result;
-  }
-
 public:
   pointLight worldLight;
-
-  std::vector<object *> sVec;
+  std::vector<shape *> sVec;
 
 private:
   material m;

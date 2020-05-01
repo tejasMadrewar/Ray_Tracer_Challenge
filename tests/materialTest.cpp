@@ -1,8 +1,10 @@
 #include "../src/material.h"
 #include "../src/light.h"
+#include "../src/stripePattern.h"
 #include "catch2/catch.hpp"
+#include <memory>
 
-TEST_CASE("The default material", "[single-file][material]") {
+TEST_CASE("The default material of MATERIAL", "[single-file][material]") {
   material m;
 
   REQUIRE(m.ambient == Approx(0.1));
@@ -128,4 +130,39 @@ TEST_CASE("LIGHTENING WITH THE SURFACE IN SHADOW", "[single-file][material]") {
   result = lightening(m, l, position, eyev, normalv, in_shadow);
 
   REQUIRE((result == color(0.1, 0.1, 0.1)) == true);
+}
+
+TEST_CASE("Lightening with a pattern applied",
+          "[single-file][material][pattern]") {
+
+  vec eyev, normalv;
+  pointLight l;
+  material m;
+  color result1;
+  color result2;
+  bool in_shadow;
+  std::shared_ptr<pattern> p(new stripePattern(color(1, 1, 1), color(0, 0, 0)));
+
+  m.ambient = 1;
+  m.diffuse = 0;
+  m.specular = 0;
+
+  m.setPattern(p);
+  // m.setStripePattern(color(1, 1, 1), color(0, 0, 0));
+
+  point position1(0.9, 0, 0);
+  point position2(1.1, 0, 0);
+
+  eyev = vec(0, 0, -1);
+  normalv = vec(0, 0, -1);
+
+  l.position = point(0, 0, -10);
+  l.intensity = color(1, 1, 1);
+
+  in_shadow = false;
+  result1 = lightening(m, l, position1, eyev, normalv, in_shadow);
+  result2 = lightening(m, l, position2, eyev, normalv, in_shadow);
+
+  REQUIRE((result1 == color(1, 1, 1)) == true);
+  REQUIRE((result2 == color(0, 0, 0)) == true);
 }

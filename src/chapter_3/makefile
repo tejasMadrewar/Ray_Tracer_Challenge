@@ -1,13 +1,14 @@
 #CC = g++
 CC = clang++
 CLANG_FORMAT = clang-format
-CCFLAGS = -std=c++11 -g
+CCFLAGS = -std=c++14 -g
 OBJECTS = 
 
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp,%.o,$(SRC))
 
-OBJECTS += $(OBJ)
+#OBJECTS += $(OBJ)
+OBJECTS = canvas.o main.o
 
 .PHONY: clean all format
 
