@@ -11,6 +11,9 @@ class shape;
 
 class intersection {
 public:
+  shape *obj;
+  float intersected;
+
   intersection() {
     obj = nullptr;
     intersected = 0;
@@ -25,9 +28,6 @@ public:
     obj = i.obj;
     intersected = i.intersected;
   }
-
-  shape *obj;
-  float intersected;
 
   // equality between intersection
   bool operator==(intersection &i) {
@@ -108,24 +108,6 @@ intersection hit(std::vector<intersection> &v) {
     return intersection(0, nullptr);
 }
 
-// preComputed prepareComputation(intersection i, ray r) {
-//  float EPSILON = 0.001;
-//  preComputed result;
-//  result.objptr = i.obj;
-//  result.eyev = -r.direction;
-//  result.position = r.position(i.intersected);
-//  result.normalv = i.obj->normalAt(result.position);
-//  if (dot(result.normalv, result.eyev) <
-//      0) { // check point is inside of outside
-//    result.inside = true;
-//    result.normalv = -result.normalv;
-//  } else {
-//    result.inside = false;
-//  }
-//  result.overPoint = result.position + (result.normalv * EPSILON);
-//
-//  return result;
-//}
 
 } // namespace
 

@@ -1,31 +1,40 @@
 #include "./world.h"
+#include <memory>
+
+
+void world::add_shape(std::shared_ptr<shape> sPtr){
+	this->vecShapes.push_back(sPtr);
+}
 
 void world::add_sphere(const mat &trans, const material &m) {
-  shape *s1 = new sphere();
-  s1->setMaterial(m);
-  s1->setTransform(trans);
-  this->sVec.push_back(s1);
+  std::shared_ptr<shape> s(new sphere());
+  s->setMaterial(m);
+  s->setTransform(trans);
+  this->vecShapes.push_back(s);
 }
 
 void world::add_plane(const mat &trans, const material &m) {
-  shape *s1 = new plane();
-  s1->setMaterial(m);
-  s1->setTransform(trans);
-  this->sVec.push_back(s1);
+  std::shared_ptr<shape> s(new plane());
+  s->setMaterial(m);
+  s->setTransform(trans);
+  this->vecShapes.push_back(s);
 }
 
 void world::add_sphere(const mat &trans) {
-  sphere *s1 = new sphere();
-  s1->setTransform(trans);
-  this->sVec.push_back(s1);
+  std::shared_ptr<shape> s(new plane());
+  s->setTransform(trans);
+  this->vecShapes.push_back(s);
 }
 
 std::vector<intersection> world::intersect_world(ray &r) {
+	// return vector of intersection
+	// intersection contains shape* and intersected
 
   std::vector<intersection> worldIntersects;
   std::vector<intersection> temp;
 
-  for (auto &i : sVec) {
+  //for (auto &i : sVec) {
+  for (auto &i : vecShapes) {
     temp = (*i).intersect(r);
     if (temp.size() != 0) {
       worldIntersects.insert(worldIntersects.end(), temp.begin(), temp.end());
@@ -50,8 +59,8 @@ std::vector<intersection> world::intersect_world(ray &r) {
 color world::shadeHit(preComputed p) {
   color result;
   bool Shadowed = this->isShadowed(p.overPoint);
-  result = lightening(p.objptr->getMaterial(), worldLight, p.overPoint, p.eyev,
-                      p.normalv, Shadowed);
+  result = lightening(p.objptr->getMaterial(), *(p.objptr), worldLight, p.overPoint,
+                      p.eyev, p.normalv, Shadowed);
 
 #if WORLD_DEBUG
   std::cout << "----------------\n"
@@ -95,7 +104,8 @@ color world::colorAt(ray r) {
   preComputed p;
   p = prepareComputation(i, r);
   bool Shadowed = this->isShadowed(p.overPoint);
-  return lightening(p.objptr->getMaterial(), worldLight, p.overPoint, p.eyev,
+  
+  return lightening(p.objptr->getMaterial(), *(p.objptr), worldLight, p.overPoint, p.eyev,
                     p.normalv, Shadowed);
 }
 

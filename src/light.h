@@ -4,6 +4,7 @@
 #include "./color.h"
 #include "./material.h"
 #include "./point.h"
+#include "./shape.h"
 
 class pointLight {
 public:
@@ -17,18 +18,18 @@ public:
 
 namespace {
 
-color lightening(material m, pointLight &l, point &position, vec &eyev,
-                 vec &normalv, bool in_shadow = false) {
-  // color lightening(material m,shape* s = nullptr, pointLight &l, point
-  // &position, vec &eyev, vec &normalv, bool in_shadow = false) {
+color lightening(material m, shape &s, pointLight &l, point &position,
+                 vec &eyev, vec &normalv, bool in_shadow = false) {
   color ambient, diffuse, specular, effective_color, result;
   vec lightv, reflectv;
   float light_dot_normal, reflect_dot_eye, factor;
 
   color col;
 
-  if (m.patternPtr != nullptr) {
-    col = m.patternPtr->stripeAt(position);
+  // if (m.patternPtr != nullptr) {
+  //  col = m.patternPtr->stripeAt(position);
+  if (s.patternPtr != nullptr) {
+    col = s.ColorAtShape(position);
   } else {
     col = m.col;
   }

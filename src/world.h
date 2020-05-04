@@ -1,6 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include <vector>
 #define WORLD_DEBUG 0
 
 #include "./light.h"
@@ -10,20 +11,19 @@
 #include "./transform.h"
 #include "mat.h"
 #include <algorithm>
+#include <memory>
 
 class world {
 public:
   world() {}
-  ~world() {
-    for (auto i : sVec)
-      delete i;
-  }
-  void add_sphere(const mat &trans, const material &m);
-  void add_plane(const mat &trans, const material &m);
-  void add_sphere(const mat &trans);
+  ~world() {}
   std::vector<intersection> intersect_world(ray &r);
   color shadeHit(preComputed p);
   color colorAt(ray r);
+  void add_sphere(const mat &trans, const material &m);
+  void add_plane(const mat &trans, const material &m);
+  void add_sphere(const mat &trans);
+  void add_shape(std::shared_ptr<shape> sptr);
   bool isShadowed(point &p);
 
   static world default_world() {
@@ -46,7 +46,8 @@ public:
 
 public:
   pointLight worldLight;
-  std::vector<shape *> sVec;
+  //std::vector<shape *> sVec;
+  std::vector<std::shared_ptr<shape>> vecShapes;
 
 private:
   material m;

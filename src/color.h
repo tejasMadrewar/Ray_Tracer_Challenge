@@ -32,6 +32,10 @@ public:
     return color(t[0] + a.t[0], t[1] + a.t[1], t[2] + a.t[2]);
   }
 
+  color operator-(const color &a) {
+    return color(t[0] - a.t[0], t[1] - a.t[1], t[2] - a.t[2]);
+  }
+
   friend color operator*(const color &a, const float &b) {
     return color(a.t[0] * b, a.t[1] * b, a.t[2] * b);
   }

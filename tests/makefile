@@ -27,15 +27,14 @@ transform.o: mat.o
 ray.o: point.o vec.o mat.o
 light.o: color.o point.o
 intersection.o: ray.o
-material.o: color.o light.o stripePattern.o
+material.o: color.o light.o
 sphere.o: shape.o
 world.o: light.o material.o shape.o
 transformation.o: point.o vec.o transform.o
 camera.o: canvas.o mat.o ray.o transformation.o world.o
-shape.o: point.o vec.o ray.o mat.o material.o intersection.o
+shape.o: point.o vec.o ray.o mat.o material.o intersection.o pattern.o
 plane.o: shape.o
 pattern.o: color.o point.o
-stripePattern.o:pattern.o
 
 tupleTest.o: tuple.o vec.o point.o color.o canvas.o
 matTest.o: mat.o
@@ -50,7 +49,7 @@ transformationTest.o:transformation.o
 cameraTest.o: camera.o
 shapeTest.o: shape.o sphere.o
 planeTest.o: plane.o
-patternTest.o: pattern.o stripePattern.o
+patternTest.o: pattern.o
 
 # pattern rule for compiling the tests file
 %.o: %.cpp

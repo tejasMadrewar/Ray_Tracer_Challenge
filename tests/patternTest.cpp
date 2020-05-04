@@ -1,7 +1,6 @@
 #include "../src/pattern.h"
 #include "../src/shape.h"
 #include "../src/sphere.h"
-#include "../src/stripePattern.h"
 #include "../src/transform.h"
 
 #include "catch2/catch.hpp"
@@ -71,13 +70,184 @@ TEST_CASE("Stripes with an object transformation", "[single-file][pattern]") {
   color result;
   m = t.scale(2, 2, 2);
 
-  stripePattern sp(white, black);
-  sp.setTransform(m);
-
-  m = m.inverse().transpose();
-
+  s.setTransform(m);
+  s.setStripePattern(white, black);
   point p = point(1.5, 0, 0);
-  result = sp.stripeAtObject(m, p);
 
-  REQUIRE((1 == 1) == true);
+  result = s.ColorAtShape(p);
+
+  REQUIRE((result == white) == true);
+}
+
+TEST_CASE("Stripes with a pattern transformation", "[single-file][pattern]") {
+  sphere s;
+  color white(1, 1, 1);
+  color black(0, 0, 0);
+  transform t;
+  mat m(4);
+  color result;
+  m = t.scale(2, 2, 2);
+
+  s.setStripePattern(white, black, m);
+  point p = point(1.5, 0, 0);
+
+  result = s.ColorAtShape(p);
+
+  REQUIRE((result == white) == true);
+}
+
+TEST_CASE("Stripes with both ann object and a pattern transformation",
+          "[single-file][pattern]") {
+  sphere s;
+  color white(1, 1, 1);
+  color black(0, 0, 0);
+  transform t;
+  mat m(4);
+  color result;
+  point p = point(2.5, 0, 0);
+
+  m = t.scale(2, 2, 2);
+  s.setTransform(m);
+
+  m = t.translate(0.5, 0, 0);
+  s.setStripePattern(white, black, m);
+
+  result = s.ColorAtShape(p);
+
+  REQUIRE((result == white) == true);
+}
+
+TEST_CASE("A gradient lineraly interpolate between colors",
+          "[single-file][pattern]") {
+  sphere s;
+  color white(1, 1, 1);
+  color black(0, 0, 0);
+  transform t;
+  mat m(4);
+  color result;
+  point p1 = point(0, 0, 0);
+  point p2 = point(0.25, 0, 0);
+  point p3 = point(0.5, 0, 0);
+  point p4 = point(0.75, 0, 0);
+
+  color c2(0.75, 0.75, 0.75);
+  color c3(0.5, 0.5, 0.5);
+  color c4(0.25, 0.25, 0.25);
+
+  s.setGradientPattern(white, black);
+
+  result = s.ColorAtShape(p1);
+  REQUIRE((result == white) == true);
+
+  result = s.ColorAtShape(p2);
+  REQUIRE((result == c2) == true);
+
+  result = s.ColorAtShape(p3);
+  REQUIRE((result == c3) == true);
+
+  result = s.ColorAtShape(p4);
+  REQUIRE((result == c4) == true);
+}
+
+TEST_CASE("A ring should extend in both x and z [ring pattern]",
+          "[single-file][pattern]") {
+  sphere s;
+  color white(1, 1, 1);
+  color black(0, 0, 0);
+  transform t;
+  mat m(4);
+  color result;
+  point p1 = point(0, 0, 0);
+  point p2 = point(1, 0, 0);
+  point p3 = point(0, 0, 1);
+  point p4 = point(0.708, 0, 0.708);
+
+  s.setRingPattern(white, black);
+
+  result = s.ColorAtShape(p1);
+  REQUIRE((result == white) == true);
+
+  result = s.ColorAtShape(p2);
+  REQUIRE((result == black) == true);
+
+  result = s.ColorAtShape(p3);
+  REQUIRE((result == black) == true);
+
+  result = s.ColorAtShape(p4);
+  REQUIRE((result == black) == true);
+}
+
+TEST_CASE("Checker should repeat in x [3d checker pattern]",
+          "[single-file][pattern]") {
+  sphere s;
+  color white(1, 1, 1);
+  color black(0, 0, 0);
+  transform t;
+  mat m(4);
+  color result;
+  point p1 = point(0, 0, 0);
+  point p2 = point(0.99, 0, 0);
+  point p3 = point(1.01, 0, 0);
+
+  s.setThreeDCheckerPattern(white, black);
+
+  result = s.ColorAtShape(p1);
+  REQUIRE((result == white) == true);
+
+  result = s.ColorAtShape(p2);
+  REQUIRE((result == white) == true);
+
+  result = s.ColorAtShape(p3);
+  // if(result == white ) std::cout << "white\n"; else std::cout << "black\n";
+  REQUIRE((result == black) == true);
+}
+
+TEST_CASE("Checker should repeat in y [3d checker pattern]",
+          "[single-file][pattern]") {
+  sphere s;
+  color white(1, 1, 1);
+  color black(0, 0, 0);
+  transform t;
+  mat m(4);
+  color result;
+  point p1 = point(0, 0, 0);
+  point p2 = point(0, 0.99, 0);
+  point p3 = point(0, 1.01, 0);
+
+  s.setThreeDCheckerPattern(white, black);
+
+  result = s.ColorAtShape(p1);
+  REQUIRE((result == white) == true);
+
+  result = s.ColorAtShape(p2);
+  REQUIRE((result == white) == true);
+
+  result = s.ColorAtShape(p3);
+  // if(result == white ) std::cout << "white\n"; else std::cout << "black\n";
+  REQUIRE((result == black) == true);
+}
+
+TEST_CASE("Checker should repeat in z [3d checker pattern]",
+          "[single-file][pattern]") {
+  sphere s;
+  color white(1, 1, 1);
+  color black(0, 0, 0);
+  transform t;
+  mat m(4);
+  color result;
+  point p1 = point(0, 0, 0);
+  point p2 = point(0, 0, 0.99);
+  point p3 = point(0, 0, 1.01);
+
+  s.setThreeDCheckerPattern(white, black);
+
+  result = s.ColorAtShape(p1);
+  REQUIRE((result == white) == true);
+
+  result = s.ColorAtShape(p2);
+  REQUIRE((result == white) == true);
+
+  result = s.ColorAtShape(p3);
+  // if(result == white ) std::cout << "white\n"; else std::cout << "black\n";
+  REQUIRE((result == black) == true);
 }

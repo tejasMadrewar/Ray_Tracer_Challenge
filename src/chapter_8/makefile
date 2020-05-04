@@ -1,6 +1,6 @@
 CC = clang++
 CLANG_FORMAT = clang-format
-#CCFLAGS = -std=c++11 -g
+#CCFLAGS = -std=c++14 -g
 CCFLAGS = -std=c++14 -O2
 OBJECTS = 
 
@@ -15,7 +15,8 @@ OBJECTS = camera.o shape.o sphere.o plane.o canvas.o world.o pattern.o
 
 .PHONY: clean all format
 
-all: $(OBJPPM) $(OBJEXE)
+#all: $(OBJPPM) $(OBJEXE)
+all: $(OBJPPM) $(OBJEXE) $(OBJECTS)
 
 %.exe: %.o $(OBJECTS)
 	$(CC) $(CCFLAGS) $^ -o $@

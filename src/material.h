@@ -2,7 +2,7 @@
 #define MATERIAL_H
 
 #include "color.h"
-#include "stripePattern.h"
+//#include "stripePattern.h"
 #include <memory>
 
 #define MATERIAL_DEBUG 0
@@ -18,7 +18,7 @@ public:
     specular = n.specular;
     shiniess = n.shiniess;
     col = n.col;
-    patternPtr = n.patternPtr;
+    // patternPtr = n.patternPtr;
   }
 
   bool operator==(const material &n) {
@@ -37,11 +37,11 @@ public:
   float shiniess = 200;
 
   // pattern
-  void setStripePattern(color c1, color c2) {
-    patternPtr = std::shared_ptr<pattern>(new stripePattern(c1, c2));
-  }
-  void setPattern(std::shared_ptr<pattern> p) { patternPtr = p; }
-  std::shared_ptr<pattern> patternPtr = nullptr;
+  // void setStripePattern(color c1, color c2) {
+  //   patternPtr = std::shared_ptr<pattern>(new stripePattern(c1, c2));
+  // }
+  // void setPattern(std::shared_ptr<pattern> p) { patternPtr = p; }
+  // std::shared_ptr<pattern> patternPtr = nullptr;
 };
 
 #endif
