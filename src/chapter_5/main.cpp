@@ -77,7 +77,7 @@ int main() {
         positionp = r.position(inter.intersected);
         normalv = s.normalAt(positionp);
         eyev = -r.direction;
-        col = lightening(m, l, positionp, eyev, normalv);
+        col = lightening(m, s, l, positionp, eyev, normalv);
         c.write_pixel(i, c.height() - j, col);
       }
     }
@@ -107,7 +107,7 @@ int main() {
         positionp = r.position(inter.intersected);
         normalv = s.normalAt(positionp);
         eyev = -r.direction;
-        col = lightening(m, l, positionp, eyev, normalv);
+        col = lightening(m, s, l, positionp, eyev, normalv);
         c1.write_pixel(i, c.height() - j, col);
       }
     }
@@ -135,7 +135,7 @@ int main() {
         positionp = r.position(inter.intersected);
         normalv = s.normalAt(positionp);
         eyev = -r.direction;
-        col = lightening(m, l, positionp, eyev, normalv);
+        col = lightening(m, s, l, positionp, eyev, normalv);
         c2.write_pixel(i, c.height() - j, col);
       }
     }
@@ -163,7 +163,7 @@ int main() {
         positionp = r.position(inter.intersected);
         normalv = s.normalAt(positionp);
         eyev = -r.direction;
-        col = lightening(m, l, positionp, eyev, normalv);
+        col = lightening(m, s, l, positionp, eyev, normalv);
         c3.write_pixel(i, c.height() - j, col);
       }
     }
@@ -191,7 +191,7 @@ int main() {
         positionp = r.position(inter.intersected);
         normalv = s.normalAt(positionp);
         eyev = -r.direction;
-        col = lightening(m, l, positionp, eyev, normalv);
+        col = lightening(m, s, l, positionp, eyev, normalv);
         c4.write_pixel(i, c.height() - j, col);
       }
     }

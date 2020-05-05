@@ -13,7 +13,7 @@
 
 int main() {
 
-  //camera cam(100, 50, PI / 3);
+  // camera cam(100, 50, PI / 3);
   camera cam(3000, 1500, PI / 3);
   transformation trans;
   point from(0, 1.5, -5);

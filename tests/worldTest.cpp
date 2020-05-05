@@ -32,7 +32,8 @@ TEST_CASE("SHADING AN INTERSECTION", "[single-file][world]") {
   m.specular = 0.2;
   s1.setMaterial(m);
 
-  intersection i(4, w.sVec.at(0)); // first object
+  // intersection i(4, w.sVec.at(0)); // first object
+  intersection i(4, w.vecShapes.at(0)); // first object
   p = prepareComputation(i, r);
 
   color result = w.shadeHit(p);
@@ -52,7 +53,7 @@ TEST_CASE("SHADING AN INTERSECTION FROM THE INSIDE", "[single-file][world]") {
   w.worldLight.intensity = color(1, 1, 1);
   s2.setTransform(t.scale(0.5, 0.5, 0.5));
 
-  intersection i(0.5, w.sVec.at(1)); // with second object
+  intersection i(0.5, w.vecShapes.at(1)); // with second object
 
   p = prepareComputation(i, r);
 
@@ -86,9 +87,9 @@ TEST_CASE("THE COLOR WITH AN INTERSECTION BEHIND THE RAY",
           "[single-file][world]") {
   world w = world::default_world();
   ray r(point(0, 0, 0.75), vec(0, 0, -1));
-  sphere *s = (sphere *)w.sVec.at(0);
+  sphere *s = (sphere *)w.vecShapes.at(0).get();
   s->m.ambient = 1;
-  s = (sphere *)w.sVec.at(1);
+  s = (sphere *)w.vecShapes.at(1).get();
   s->m.ambient = 1;
 
   color result, answer;
@@ -141,7 +142,7 @@ TEST_CASE("shade_hit() IS GIVEN AN INTERSECTION IN SHADOW",
   w.add_sphere(matrix);
   w.add_sphere(t.translate(0, 0, 10));
 
-  intersection i(4, w.sVec.at(1));
+  intersection i(4, w.vecShapes.at(1));
   preComputed pre;
   pre = prepareComputation(i, r);
   color c = w.shadeHit(pre);

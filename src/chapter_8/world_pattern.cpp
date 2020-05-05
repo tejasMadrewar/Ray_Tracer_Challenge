@@ -39,8 +39,9 @@ int main() {
   Trans = t.scale(10, 0.01, 10);
   f->setTransform(Trans);
   f->setMaterial(m);
-  patternTransform = t.scale(0.2,0.2,0.2);
-  f->setThreeDCheckerPattern(color(0.1, 0.2, 0.3), color(1, 0.9, 0.9),patternTransform);
+  patternTransform = t.scale(0.2, 0.2, 0.2);
+  f->setThreeDCheckerPattern(color(0.1, 0.2, 0.3), color(1, 0.9, 0.9),
+                             patternTransform);
   w.add_shape(f);
 
   // middle
@@ -52,10 +53,10 @@ int main() {
   std::shared_ptr<shape> s1(new sphere());
   s1->setMaterial(n);
   s1->setTransform(Trans);
-  patternTransform = t.scale(0.2,0.2,0.2) * t.rotY(PI/4) * t.rotZ(PI/4);
-  s1->setStripePattern(color(1,0.8,0.1), color(0.1,1,0.5),patternTransform);
+  patternTransform = t.scale(0.2, 0.2, 0.2) * t.rotY(PI / 4) * t.rotZ(PI / 4);
+  s1->setStripePattern(color(1, 0.8, 0.1), color(0.1, 1, 0.5),
+                       patternTransform);
   w.add_shape(s1);
-  
 
   // right
   Trans = t.translate(1.5, 0.5, -0.5) * t.scale(0.5, 0.5, 0.5);
@@ -66,10 +67,9 @@ int main() {
   std::shared_ptr<shape> s2(new sphere());
   s2->setMaterial(o);
   s2->setTransform(Trans);
-  patternTransform = t.scale(0.6,0.6,0.6) * t.rotY(PI/4);
-  s2->setGradientPattern(color(1,0.8,0.1), o.col,patternTransform);
+  patternTransform = t.scale(0.6, 0.6, 0.6) * t.rotY(PI / 4);
+  s2->setGradientPattern(color(1, 0.8, 0.1), o.col, patternTransform);
   w.add_shape(s2);
-  //w.add_sphere(Trans, o);
 
   // left
   Trans = t.translate(-1.5, 0.33, -0.75) * t.scale(0.33, 0.33, 0.33);
@@ -80,10 +80,9 @@ int main() {
   std::shared_ptr<shape> s3(new sphere());
   s3->setMaterial(o);
   s3->setTransform(Trans);
-  patternTransform = t.scale(0.1,0.1,0.1) * t.rotY(PI/4);
-  s3->setThreeDCheckerPattern(o.col, p.col,patternTransform);
+  patternTransform = t.scale(0.1, 0.1, 0.1) * t.rotX(PI / 2) * t.rotZ(PI / 4);
+  s3->setRingPattern(o.col, p.col, patternTransform);
   w.add_shape(s3);
-  //w.add_sphere(Trans, p);
 
   // light source
   pointLight light;

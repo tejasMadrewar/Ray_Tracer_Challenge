@@ -3,6 +3,7 @@
 
 #include "./ray.h"
 #include <iostream>
+#include <memory>
 #include <vector>
 
 class shape;
@@ -24,6 +25,10 @@ public:
     intersected = i;
   }
 
+  intersection(float i, std::shared_ptr<shape> o) {
+    obj = o.get();
+    intersected = i;
+  }
   intersection(const intersection &i) {
     obj = i.obj;
     intersected = i.intersected;
@@ -107,7 +112,6 @@ intersection hit(std::vector<intersection> &v) {
   } else
     return intersection(0, nullptr);
 }
-
 
 } // namespace
 

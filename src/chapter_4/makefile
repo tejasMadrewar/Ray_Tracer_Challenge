@@ -7,7 +7,7 @@ OBJECTS =
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp,%.o,$(SRC))
 
-OBJECTS = main.o canvas.o intersection.o shape.o sphere.o
+OBJECTS = main.o canvas.o intersection.o shape.o sphere.o pattern.o
 
 .PHONY: clean all format
 

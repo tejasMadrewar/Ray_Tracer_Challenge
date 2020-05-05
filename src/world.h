@@ -46,7 +46,7 @@ public:
 
 public:
   pointLight worldLight;
-  //std::vector<shape *> sVec;
+  // std::vector<shape *> sVec;
   std::vector<std::shared_ptr<shape>> vecShapes;
 
 private:
