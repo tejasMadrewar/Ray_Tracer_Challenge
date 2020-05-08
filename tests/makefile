@@ -1,7 +1,6 @@
 CC = clang++
 CLANG_FORMAT = clang-format
 CCFLAGS = -std=c++14 -g
-#CCFLAGS = -std=c++11 -g
 
 TESTS = $(wildcard *.cpp)
 OBJTESTS = $(TESTS:.cpp=.o)
@@ -11,12 +10,12 @@ OBJSRCFILES = $(SRCFILES:.cpp=.o)
 
 OBJECTS = $(OBJTESTS) $(OBJSRCFILES)
 
+CHAPFOLDERS = $(dir $(wildcard ../src/chap*/))
+CHAPFILESH = $(wildcard ../src/chap*/*.h)
+CHAPFILESCPP = $(wildcard ../src/chap*/*.cpp)
+
 .PHONY: clean all test format
-
-all: test
-
-AllTests.exe: $(OBJECTS)
-	$(CC) $(CCFLAGS) $^ -o $@
+all: format test
 
 point.o: tuple.o
 vec.o: tuple.o
@@ -40,7 +39,7 @@ tupleTest.o: tuple.o vec.o point.o color.o canvas.o
 matTest.o: mat.o
 transformTest.o: transform.o
 sphereTest.o: sphere.o
-intersectionTest.o: sphere.o intersection.o
+intersectionTest.o: sphere.o intersection.o plane.o
 rayTest.o: ray.o transform.o
 lightTest.o: light.o
 materialTest.o: material.o
@@ -50,6 +49,10 @@ cameraTest.o: camera.o
 shapeTest.o: shape.o sphere.o
 planeTest.o: plane.o
 patternTest.o: pattern.o
+
+
+AllTests.exe: $(OBJECTS)
+	$(CC) $(CCFLAGS) $^ -o $@
 
 # pattern rule for compiling the tests file
 %.o: %.cpp
@@ -63,9 +66,12 @@ test: AllTests.exe
 	AllTests.exe -r console 
 
 format:
-	$(CLANG_FORMAT) -i *.cpp
-	$(CLANG_FORMAT) -i ../src/*.cpp
-	$(CLANG_FORMAT) -i ../src/*.h
+	@echo Code Formatting
+	@$(CLANG_FORMAT) -i *.cpp
+	@$(CLANG_FORMAT) -i ../src/*.cpp
+	@$(CLANG_FORMAT) -i ../src/*.h
+	@$(CLANG_FORMAT) -i $(CHAPFILESCPP)
+	@$(CLANG_FORMAT) -i $(CHAPFILESH)
 
 clean:
 	del *.o *.exe *.ilk *.pdb *.ppm

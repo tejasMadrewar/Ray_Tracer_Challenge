@@ -65,6 +65,7 @@ public:
     normalv = p.normalv;
     inside = p.inside;
     overPoint = p.overPoint;
+    reflectv = p.reflectv;
   }
 
   shape *objptr;
@@ -72,6 +73,7 @@ public:
   point overPoint;
   vec eyev;
   vec normalv;
+  vec reflectv;
   bool inside = false;
 };
 

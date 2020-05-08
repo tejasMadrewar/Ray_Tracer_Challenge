@@ -176,3 +176,9 @@ TEST_CASE("Lightening with a pattern applied",
   REQUIRE((result1 == color(1, 1, 1)) == true);
   REQUIRE((result2 == color(0, 0, 0)) == true);
 }
+
+TEST_CASE("Reflectivity for the default material", "[single-file][material]") {
+
+  material m;
+  REQUIRE((m.reflective == 0.0) == true);
+}

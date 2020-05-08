@@ -52,7 +52,7 @@ public:
 
   // compare
   auto operator==(const tuple &a) -> bool {
-    float EPSILON = 0.0001;
+    float EPSILON = 0.0011;
     return (fabs(t[0] - a.t[0]) < EPSILON) && (fabs(t[1] - a.t[1]) < EPSILON) &&
            (fabs(t[2] - a.t[2]) < EPSILON) && (fabs(t[3] - a.t[3]) < EPSILON);
   }

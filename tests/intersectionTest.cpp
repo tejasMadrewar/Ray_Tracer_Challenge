@@ -1,7 +1,9 @@
 #include "../src/intersection.h"
+#include "../src/plane.h"
 #include "../src/sphere.h"
 #include "../src/transform.h"
 #include "./catch2/catch.hpp"
+#include <memory>
 #include <vector>
 
 TEST_CASE("INTERSECTION ENCAPSUALTES INTERSECTIONS AND OBJECT",
@@ -140,4 +142,16 @@ TEST_CASE("THE HIT SHOULD OFFSET THE POINT", "[single-file][intersections]") {
   pre = prepareComputation(i, r);
   REQUIRE((pre.overPoint.t[2] < (-0.0001 / 2)) == true);
   REQUIRE((pre.position.t[2] > pre.overPoint.t[2]) == true);
+}
+
+TEST_CASE("Preocomputing the reflective vector",
+          "[single-file][intersections]") {
+
+  std::shared_ptr<shape> s(new plane);
+  ray r(point(0, 1, -1), vec(0, -sqrt(2) / 2, sqrt(2) / 2));
+  intersection i(sqrt(2), s);
+  preComputed p;
+  p = prepareComputation(i, r);
+
+  REQUIRE((p.reflectv == vec(0, sqrt(2) / 2, sqrt(2) / 2)) == true);
 }

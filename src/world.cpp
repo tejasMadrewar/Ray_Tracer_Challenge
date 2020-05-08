@@ -55,11 +55,15 @@ std::vector<intersection> world::intersect_world(ray &r) {
   return worldIntersects;
 }
 
-color world::shadeHit(preComputed p) {
-  color result;
+color world::shadeHit(preComputed p, int remaining) {
+  color result, reflected, surface;
   bool Shadowed = this->isShadowed(p.overPoint);
-  result = lightening(p.objptr->getMaterial(), *(p.objptr), worldLight,
-                      p.overPoint, p.eyev, p.normalv, Shadowed);
+  surface = lightening(p.objptr->getMaterial(), *(p.objptr), worldLight,
+                       p.overPoint, p.eyev, p.normalv, Shadowed);
+
+  reflected = this->reflectedColorAt(p, remaining);
+
+  result = surface + reflected;
 
 #if WORLD_DEBUG
   std::cout << "----------------\n"
@@ -94,7 +98,7 @@ color world::shadeHit(preComputed p) {
   return result;
 }
 
-color world::colorAt(ray r) {
+color world::colorAt(ray r, int remaining) {
   std::vector<intersection> iArray = intersect_world(r);
   intersection i = hit(iArray);
   if (i.obj == nullptr) { // ray does not hit shape
@@ -104,8 +108,7 @@ color world::colorAt(ray r) {
   p = prepareComputation(i, r);
   bool Shadowed = this->isShadowed(p.overPoint);
 
-  return lightening(p.objptr->getMaterial(), *(p.objptr), worldLight,
-                    p.overPoint, p.eyev, p.normalv, Shadowed);
+  return shadeHit(p, remaining);
 }
 
 bool world::isShadowed(point &p) {
@@ -121,5 +124,17 @@ bool world::isShadowed(point &p) {
   if (i.obj != nullptr && i.intersected < distance) {
     result = true;
   }
+  return result;
+}
+
+color world::reflectedColorAt(preComputed p, int remaining) {
+  color result(0, 0, 0);
+  if (p.objptr->m.reflective == 0 || remaining == 0)
+    return result;
+
+  ray reflectedRay(p.overPoint, p.reflectv);
+  color c = colorAt(reflectedRay, remaining - 1);
+  result = c * p.objptr->m.reflective;
+
   return result;
 }

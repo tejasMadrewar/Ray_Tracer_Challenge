@@ -1,6 +1,7 @@
 #include "../src/world.h"
 #include "../src/intersection.h"
 #include "catch2/catch.hpp"
+#include <memory>
 
 TEST_CASE("WORLD DEFAULT CONSTRUCTOR", "[single-file][world]") {
   world w = world::default_world();
@@ -148,4 +149,102 @@ TEST_CASE("shade_hit() IS GIVEN AN INTERSECTION IN SHADOW",
   color c = w.shadeHit(pre);
 
   REQUIRE((c == color(0.1, 0.1, 0.1)) == true);
+}
+
+TEST_CASE("The reflected color for a nonreflective material",
+          "[single-file][world]") {
+  world w = w.default_world();
+  ray r(point(0, 0, 0), vec(0, 0, 1));
+
+  std::shared_ptr<shape> s = w.vecShapes.at(1);
+  (*s).m.ambient = 1;
+
+  intersection i(1, s);
+
+  preComputed pre;
+  pre = prepareComputation(i, r);
+  color c = w.reflectedColorAt(pre);
+
+  REQUIRE((c == color(0, 0, 0)) == true);
+}
+
+TEST_CASE("The reflected color for a reflective material",
+          "[single-file][world]") {
+  world w = w.default_world();
+  ray r(point(0, 0, -3), vec(0, -sqrt(2) / 2, sqrt(2) / 2));
+  color c;
+  preComputed p;
+  std::shared_ptr<shape> s(new plane);
+  (*s).m.reflective = 0.5;
+  transform t;
+  (*s).setTransform(t.translate(0, -1, 0));
+  w.add_shape(s);
+  intersection i(sqrt(2), s);
+
+  p = prepareComputation(i, r);
+  c = w.reflectedColorAt(p);
+
+  REQUIRE((c == color(0.19032, 0.2379, 0.14274)) == true);
+}
+
+TEST_CASE("shadeHit() with a reflective material", "[single-file][world]") {
+  world w = w.default_world();
+  ray r(point(0, 0, -3), vec(0, -sqrt(2) / 2, sqrt(2) / 2));
+  color c;
+  transform t;
+  preComputed p;
+  std::shared_ptr<shape> s(new plane);
+  (*s).m.reflective = 0.5;
+  (*s).setTransform(t.translate(0, -1, 0));
+  w.add_shape(s);
+  intersection i(sqrt(2), s);
+
+  p = prepareComputation(i, r);
+  c = w.shadeHit(p);
+
+  REQUIRE((c == color(0.87677, 0.92436, 0.82918)) == true);
+}
+
+TEST_CASE("colorAt() with a mutually reflective material",
+          "[single-file][world]") {
+  world w;
+  ray r(point(0, 0, 0), vec(0, 1, 0));
+  pointLight l;
+  l.intensity = color(1, 1, 1);
+  l.position = point(0, 0, 0);
+  w.worldLight = l;
+  transform t;
+
+  std::shared_ptr<shape> pl(new plane);
+  (*pl).m.reflective = 1;
+  (*pl).setTransform(t.translate(0, -1, 0));
+  w.add_shape(pl);
+
+  std::shared_ptr<shape> pu(new plane);
+  (*pu).m.reflective = 1;
+  (*pu).setTransform(t.translate(0, 1, 0));
+  w.add_shape(pu);
+
+  // colorAt should terminate successfully
+  color result = w.colorAt(r);
+
+  REQUIRE((1 == 1) == true);
+}
+
+TEST_CASE("The reflected colot at the maximum recursive depth",
+          "[single-file][world]") {
+  world w = world::default_world();
+  transform t;
+  ray r(point(0, 0, -3), vec(0, -sqrt(2) / 2, sqrt(2) / 2));
+  std::shared_ptr<shape> p(new plane);
+  (*p).m.reflective = 0.5;
+  (*p).setTransform(t.translate(0, -1, 0));
+
+  w.add_shape(p);
+  intersection i(sqrt(2), p);
+  preComputed pre;
+  pre = prepareComputation(i, r);
+  color c = w.reflectedColorAt(pre, 0);
+
+  REQUIRE((c == color(0, 0, 0)) == true);
 }

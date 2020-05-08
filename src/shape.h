@@ -64,6 +64,7 @@ preComputed prepareComputation(intersection i, ray r) {
     result.inside = false;
   }
   result.overPoint = result.position + (result.normalv * EPSILON);
+  result.reflectv = r.direction.reflect(result.normalv);
 
   return result;
 }
