@@ -1,7 +1,7 @@
 CC = clang++
 CLANG_FORMAT = clang-format
 #CCFLAGS = -std=c++14 -g
-CCFLAGS = -std=c++14 -O2
+CCFLAGS = -std=c++14 -O3
 OBJECTS = 
 
 SRC = $(wildcard *.cpp)
@@ -10,7 +10,7 @@ OBJPPM = $(patsubst %.cpp,%.ppm,$(SRC))
 OBJEXE = $(patsubst %.cpp,%.exe,$(SRC))
 
 #OBJECTS += $(OBJ)
-OBJECTS = camera.o shape.o sphere.o plane.o canvas.o world.o pattern.o
+OBJECTS = camera.o shape.o sphere.o plane.o canvas.o world.o pattern.o mat.o transform.o
 
 
 .PHONY: clean all format
