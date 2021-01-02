@@ -1,1 +1,0 @@
-#include "stripePattern.h"

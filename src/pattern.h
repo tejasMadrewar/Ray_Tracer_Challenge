@@ -31,25 +31,25 @@ class test_pattern : public pattern {
 class stripePattern : public pattern {
 public:
   stripePattern(color m, color n);
-  color stripeAt(point &p);
+  color stripeAt(point &p) override;
 };
 
 class gradientPattern : public pattern {
 public:
   gradientPattern(color m, color n);
-  color stripeAt(point &p);
+  color stripeAt(point &p) override;
 };
 
 class ringPattern : public pattern {
 public:
   ringPattern(color m, color n);
-  color stripeAt(point &p);
+  color stripeAt(point &p) override;
 };
 
 class threeDCheckerPattern : public pattern {
 public:
   threeDCheckerPattern(color m, color n);
-  color stripeAt(point &p);
+  color stripeAt(point &p) override;
 };
 
 #endif

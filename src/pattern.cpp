@@ -15,6 +15,7 @@ void pattern::setColor(color &c1, color &c2) {
   b = c2;
 }
 
+// stripe pattern
 color pattern::stripeAtObject(mat &inverseTransformMatofShape,
                               point &worldPoint) {
   color result;
@@ -34,6 +35,7 @@ color stripePattern::stripeAt(point &p) {
   return ((int)floor(p.getX()) % 2 == 0) ? a : b;
 }
 
+// gradient pattern
 gradientPattern::gradientPattern(color m, color n) {
   a = m;
   b = n;
@@ -47,6 +49,7 @@ color gradientPattern::stripeAt(point &p) {
   return result;
 }
 
+// ring pattern
 ringPattern::ringPattern(color m, color n) {
   a = m;
   b = n;
@@ -58,6 +61,7 @@ color ringPattern::stripeAt(point &p) {
   return (n == 0) ? a : b;
 }
 
+// threeDChecker pattern
 threeDCheckerPattern::threeDCheckerPattern(color m, color n) {
   a = m;
   b = n;
