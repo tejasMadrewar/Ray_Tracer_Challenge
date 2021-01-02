@@ -15,7 +15,7 @@ int main() {
   // color for pattern
   color white(1, 1, 1), black(0, 0, 0);
 
-  //camera cam(100, 50, PI / 3);
+  // camera cam(100, 50, PI / 3);
   camera cam(3000, 1500, PI / 3);
   transformation trans;
   point from(0, 1.5, -5);
@@ -78,7 +78,7 @@ int main() {
   p.col = color(1, 0.8, 0.1);
   p.diffuse = 0.7;
   p.specular = 0.3;
-  //p.reflective = 0.2;
+  // p.reflective = 0.2;
   std::shared_ptr<shape> s3(new sphere());
   s3->setMaterial(p);
   s3->setTransform(Trans);
