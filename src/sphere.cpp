@@ -69,3 +69,17 @@ vec sphere::localNormalAt(point &objPoint) {
   vec normal = objPoint - origin;
   return normal.norm(); // always return normalize vector
 }
+
+// get glass sphere
+sphere sphere::glassSphere() {
+  auto sp = sphere({0, 0, 0}, 1);
+  auto t = mat::Identity(4);
+  material m;
+
+  m.transparency = 1.0;
+  m.refractiveIndex = 1.5;
+  sp.setMaterial(m);
+
+  sp.setTransform(t);
+  return sp;
+}

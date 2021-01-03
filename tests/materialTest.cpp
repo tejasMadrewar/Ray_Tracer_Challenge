@@ -182,3 +182,11 @@ TEST_CASE("Reflectivity for the default material", "[single-file][material]") {
   material m;
   REQUIRE((m.reflective == 0.0) == true);
 }
+
+TEST_CASE("Tansparency and refraction for the default material",
+          "[single-file][material]") {
+
+  material m;
+  REQUIRE((m.transparency == 0.0) == true);
+  REQUIRE((m.refractiveIndex == 1.0) == true);
+}

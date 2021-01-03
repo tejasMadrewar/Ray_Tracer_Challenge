@@ -13,6 +13,7 @@ public:
   sphere() { xsSecond.resize(2, intersection(this)); }
   sphere(point ori, float r);
   ~sphere() {}
+  static sphere glassSphere();
   void print();
   std::vector<intersection> local_intersect(ray &r);
   vec localNormalAt(point &objPoint);

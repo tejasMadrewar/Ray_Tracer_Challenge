@@ -17,6 +17,8 @@ public:
     specular = n.specular;
     shiniess = n.shiniess;
     reflective = n.reflective;
+    transparency = n.transparency;
+    refractiveIndex = n.refractiveIndex;
     col = n.col;
   }
 
@@ -33,6 +35,9 @@ public:
   float diffuse = 0.9;
   float specular = 0.9;
   float reflective = 0.0;
+  // refraction and transparency
+  float transparency = 0.0;
+  float refractiveIndex = 1.0;
 
   // 10 very large highlight and d200 very small highlight
   float shiniess = 200;

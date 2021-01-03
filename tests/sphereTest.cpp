@@ -138,3 +138,12 @@ TEST_CASE("COMPUTING THE NORMAL ON A TRANSFORMED SPHERE",
 
   REQUIRE((result == vec(0, 0.97014, -0.24254)) == true);
 }
+
+TEST_CASE("A HELPER FOR PRODUCING A SPHERE WITH A GLASSY MATERIAL",
+          "[single-file][sphere]") {
+  auto sp = sphere::glassSphere();
+
+  REQUIRE((sp.getMaterial().transparency == 1.0) == true);
+  REQUIRE((sp.getMaterial().refractiveIndex == 1.5) == true);
+  REQUIRE((sp.getTransform() == mat::Identity(4)) == true);
+}
