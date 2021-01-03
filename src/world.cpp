@@ -138,3 +138,21 @@ color world::reflectedColorAt(preComputed p, int remaining) {
 
   return result;
 }
+
+world world::default_world() {
+  world w;
+  material m;
+  transform t;
+
+  w.worldLight.intensity = color(1, 1, 1);
+  w.worldLight.position = point(-10, 10, -10);
+
+  m.col = color(0.8, 1.0, 0.6);
+  m.diffuse = 0.7;
+  m.specular = 0.2;
+
+  w.add_sphere(mat::Identity(4), m);
+  w.add_sphere(t.scale(0.5, 0.5, 0.5));
+
+  return w;
+}

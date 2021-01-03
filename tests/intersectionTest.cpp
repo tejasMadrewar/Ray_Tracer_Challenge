@@ -144,7 +144,7 @@ TEST_CASE("THE HIT SHOULD OFFSET THE POINT", "[single-file][intersections]") {
   REQUIRE((pre.position.t[2] > pre.overPoint.t[2]) == true);
 }
 
-TEST_CASE("Preocomputing the reflective vector",
+TEST_CASE("Precomputing the reflective vector",
           "[single-file][intersections]") {
 
   std::shared_ptr<shape> s(new plane);
@@ -154,4 +154,55 @@ TEST_CASE("Preocomputing the reflective vector",
   p = prepareComputation(i, r);
 
   REQUIRE((p.reflectv == vec(0, sqrt(2) / 2, sqrt(2) / 2)) == true);
+}
+
+TEST_CASE("Finding n1 and n2 at various intersections",
+          "[single-file][intersections]") {
+
+  // auto a = sphere::glassSphere();
+
+  auto a = std::shared_ptr<shape>(new sphere());
+  auto b = std::shared_ptr<shape>(new sphere());
+  auto c = std::shared_ptr<shape>(new sphere());
+  auto t = transform();
+
+  a->setTransform(t.scale(2, 2, 2));
+  a->getMaterial().refractiveIndex = 1.5;
+  a->getMaterial().transparency = 1.0;
+
+  b->setTransform(t.translate(0, 0, -0.25));
+  b->getMaterial().refractiveIndex = 2.0;
+  b->getMaterial().transparency = 1.0;
+
+  c->setTransform(t.translate(0, 0, 0.25));
+  c->getMaterial().refractiveIndex = 2.5;
+  c->getMaterial().transparency = 1.0;
+
+  auto r = ray({0, 0, -4}, {0, 0, 1});
+
+  // find intersection
+
+  std::vector<intersection> xs = {
+      {2, a}, {2.75, b}, {3.25, c}, {4.75, b}, {5.25, c}, {6, a},
+  };
+
+  std::vector<std::vector<float>> result = {
+      {1.0, 1.5}, {1.5, 2}, {2.0, 2.5}, {2.5, 2.5}, {2.5, 1.5}, {1.5, 1.0},
+  };
+
+  preComputed pre;
+  for (int i = 0; i < result.size(); i++) {
+    pre = prepareComputation(xs[i], r, xs);
+
+#define RI_DEBUG 0
+#if RI_DEBUG
+    std::cout << "IDX: " << i << "      n1: " << pre.n1 << " n2: " << pre.n2
+              << "\n";
+    std::cout << "IDX: Answer n1: " << result[i][0] << " n2: " << result[i][1]
+              << "\n\n";
+#endif
+
+    REQUIRE(pre.n1 == result[i][0]);
+    REQUIRE(pre.n2 == result[i][1]);
+  }
 }
