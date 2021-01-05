@@ -21,6 +21,7 @@ public:
   color shadeHit(preComputed p, int remaining = 4);
   color colorAt(ray r, int remaining = 4);
   color reflectedColorAt(preComputed p, int n = 1);
+  color refractedColorAt(preComputed p, int n = 1);
   void add_sphere(const mat &trans, const material &m);
   void add_plane(const mat &trans, const material &m);
   void add_sphere(const mat &trans);

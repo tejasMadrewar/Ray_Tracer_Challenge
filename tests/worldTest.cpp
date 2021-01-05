@@ -248,3 +248,22 @@ TEST_CASE("The reflected colot at the maximum recursive depth",
 
   REQUIRE((c == color(0, 0, 0)) == true);
 }
+
+TEST_CASE("The refracted color with an opaque surface",
+          "[single-file][world]") {
+  world w = w.default_world();
+  ray r(point(0, 0, -5), vec(0, 0, 1));
+  color c;
+  preComputed p;
+  auto s = w.vecShapes.at(0);
+
+  std::vector<intersection> xs = {
+      {4, s},
+      {6, s},
+  };
+
+  p = prepareComputation(xs[0], r, xs);
+  c = w.refractedColorAt(p);
+
+  REQUIRE((c == color(0, 0, 0)) == true);
+}
