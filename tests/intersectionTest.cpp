@@ -206,3 +206,17 @@ TEST_CASE("Finding n1 and n2 at various intersections",
     REQUIRE(pre.n2 == result[i][1]);
   }
 }
+
+TEST_CASE("THE UNDER POINT IS OFFSET BELOW THE SURFACE",
+          "[single-file][intersections]") {
+
+  ray r(point(0, 0, -5), vec(0, 0, 1));
+  sphere s = sphere::glassSphere();
+  transform t;
+  s.setTransform(t.translate(0, 0, 1));
+  intersection i(5, &s);
+  preComputed pre;
+  pre = prepareComputation(i, r);
+  REQUIRE((pre.underPoint.t[2] > (-0.0001 / 2)) == true);
+  REQUIRE((pre.position.t[2] < pre.underPoint.t[2]) == true);
+}

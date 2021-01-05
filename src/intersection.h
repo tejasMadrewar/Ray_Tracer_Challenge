@@ -65,6 +65,7 @@ public:
     normalv = p.normalv;
     inside = p.inside;
     overPoint = p.overPoint;
+    underPoint = p.underPoint;
     reflectv = p.reflectv;
     n1 = p.n1;
     n2 = p.n2;
@@ -73,6 +74,7 @@ public:
   shape *objptr;
   point position;
   point overPoint;
+  point underPoint;
   vec eyev;
   vec normalv;
   vec reflectv;
