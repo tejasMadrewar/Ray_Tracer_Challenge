@@ -143,10 +143,17 @@ color world::refractedColorAt(preComputed p, int remaining) {
   color result(0, 0, 0);
   if (p.objptr->m.transparency == 0 || remaining == 0)
     return color(0, 0, 0);
-  else {
-    return refractedColorAt(p, remaining - 1);
-    // return color(1, 1, 1);
+
+  // return refractedColorAt(p, remaining - 1);
+  // total internal reflection
+  const auto n_ratio = p.n1 / p.n2;
+  const auto cos_i = dot(p.eyev, p.normalv);
+  const auto sin2_t = (n_ratio * n_ratio) * (1 - (cos_i * cos_i));
+  if (sin2_t > 1.0) {
+    return color(0, 0, 0);
   }
+
+  return color(1, 1, 1);
 }
 
 world world::default_world() {

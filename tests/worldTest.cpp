@@ -284,6 +284,28 @@ TEST_CASE("The refracted color at the maximum recursive depth",
   };
 
   p = prepareComputation(xs[0], r, xs);
+  c = w.refractedColorAt(p, 0);
+
+  REQUIRE((c == color(0, 0, 0)) == true);
+}
+
+TEST_CASE("The refracted color under total internal reflection",
+          "[single-file][world]") {
+  world w = w.default_world();
+  ray r(point(0, 0, -2 / sqrt(2)), vec(0, 1, 0));
+  color c;
+  preComputed p;
+  auto s = w.vecShapes.at(0);
+  s->getMaterial().transparency = 1.0;
+  s->getMaterial().refractiveIndex = 1.5;
+
+  std::vector<intersection> xs = {
+      {float(-sqrt(2) / 2), s},
+      {float(sqrt(2) / 2), s},
+  };
+
+  // note we are now inside sphere so need to look at 2 intersection
+  p = prepareComputation(xs[1], r, xs);
   c = w.refractedColorAt(p, 5);
 
   REQUIRE((c == color(0, 0, 0)) == true);
