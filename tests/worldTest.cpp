@@ -263,7 +263,28 @@ TEST_CASE("The refracted color with an opaque surface",
   };
 
   p = prepareComputation(xs[0], r, xs);
-  c = w.refractedColorAt(p);
+  c = w.refractedColorAt(p, 5);
+
+  REQUIRE((c == color(0, 0, 0)) == true);
+}
+
+TEST_CASE("The refracted color at the maximum recursive depth",
+          "[single-file][world]") {
+  world w = w.default_world();
+  ray r(point(0, 0, -5), vec(0, 0, 1));
+  color c;
+  preComputed p;
+  auto s = w.vecShapes.at(0);
+  s->getMaterial().transparency = 1.0;
+  s->getMaterial().refractiveIndex = 1.5;
+
+  std::vector<intersection> xs = {
+      {4, s},
+      {6, s},
+  };
+
+  p = prepareComputation(xs[0], r, xs);
+  c = w.refractedColorAt(p, 5);
 
   REQUIRE((c == color(0, 0, 0)) == true);
 }

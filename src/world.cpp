@@ -142,15 +142,11 @@ color world::reflectedColorAt(preComputed p, int remaining) {
 color world::refractedColorAt(preComputed p, int remaining) {
   color result(0, 0, 0);
   if (p.objptr->m.transparency == 0 || remaining == 0)
-    return result;
+    return color(0, 0, 0);
   else {
-    return color(1, 1, 1);
+    return refractedColorAt(p, remaining - 1);
+    // return color(1, 1, 1);
   }
-
-  //  ray reflectedRay(p.overPoint, p.reflectv);
-  //  color c = colorAt(reflectedRay, remaining - 1);
-  //  result = c * p.objptr->m.reflective;
-  // return result;
 }
 
 world world::default_world() {
