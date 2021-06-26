@@ -29,15 +29,18 @@ all: format test
 -include $(OBJECTS:.o=.d)
 
 AllTests.exe: $(OBJECTS)
-	$(CXX) $(CCFLAGS) $^ -o $@
+	@echo Linking $@
+	@$(CXX) $(CCFLAGS) $^ -o $@
 
 # pattern rule for compiling the tests file
 %.o: %.cpp
-	$(CXX) $(CCFLAGS) -c $< -o $@ 
+	@echo Compiling $*.o
+	@$(CXX) $(CCFLAGS) -c $< -o $@ 
 
 # pattern rule for compiling the src file
 %.o: ..\src\%.cpp ..\src\%.h
-	$(CXX) $(CCFLAGS) -c $< -o $@ 
+	@echo Compiling $*.o
+	@$(CXX) $(CCFLAGS) -c $< -o $@ 
 
 test: AllTests.exe
 	AllTests.exe -r console 
